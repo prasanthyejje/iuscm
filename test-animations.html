@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IUSCM - Animation Test</title>
+    
+    <style>
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Section spacer */
+        .section {
+            min-height: 100vh;
+            padding: 80px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            z-index: 50;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-scrolled {
+            background: rgba(255, 249, 230, 0.95);
+        }
+
+        /* Spiritual Gurus */
+        .spiritual-gurus {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            transition: all 0.3s ease;
+        }
+
+        .gurus-hidden {
+            display: none !important;
+        }
+
+        /* === DATA-ATTRIBUTE ANIMATION SYSTEM === */
+        
+        /* Base animation state */
+        [data-animate] {
+            opacity: 0;
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            will-change: opacity, transform;
+        }
+
+        /* Animation variants */
+        [data-animate="fade"] {
+            transform: none;
+        }
+        
+        [data-animate="up"] {
+            transform: translateY(30px);
+        }
+        
+        [data-animate="left"] {
+            transform: translateX(-30px);
+        }
+        
+        [data-animate="right"] {
+            transform: translateX(30px);
+        }
+
+        /* When visible */
+        [data-animate].visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        /* Sticky media protection */
+        .sticky-media [data-animate] {
+            opacity: 1 !important;
+            transform: none !important;
+            transition: none !important;
+        }
+
+        /* Test boxes */
+        .test-box {
+            padding: 40px;
+            background: #f0f0f0;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Guru item */
+        .guru-item {
+            text-align: center;
+            color: white;
+        }
+
+        .guru-item img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: white;
+            padding: 5px;
+        }
+
+        .guru-name {
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .spiritual-gurus {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar with Gurus -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <div class="spiritual-gurus">
+                <div class="guru-item">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%23ddd'/%3E%3C/svg%3E" alt="Sri Krishna">
+                    <div class="guru-name">Sri Krishna</div>
+                </div>
+                <div class="guru-item">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%23ddd'/%3E%3C/svg%3E" alt="Adi Sankaracharya">
+                    <div class="guru-name">Adi Sankaracharya</div>
+                </div>
+                <div class="guru-item">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%23ddd'/%3E%3C/svg%3E" alt="Sri Babuji">
+                    <div class="guru-name">Sri Babuji Maharaj</div>
+                </div>
+                <div class="guru-item">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%23ddd'/%3E%3C/svg%3E" alt="Sri Lalaji">
+                    <div class="guru-name">Sri Lalaji Maharaj</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+        <div class="container">
+            <div class="test-box" style="background: rgba(255,255,255,0.9);">
+                <h2>Scroll Down to Test</h2>
+                <p>The gurus should disappear when you scroll down and reappear when you scroll back to top.</p>
+                <p>Sections below should animate as they come into view.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Test Section 1 -->
+    <section class="section">
+        <div class="container">
+            <div class="test-box" data-animate="fade">
+                <h2>Fade Animation</h2>
+                <p>This box should fade in when it comes into view.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Test Section 2 -->
+    <section class="section">
+        <div class="container">
+            <div class="test-box" data-animate="up">
+                <h2>Slide Up Animation</h2>
+                <p>This box should slide up from below when it comes into view.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Test Section 3 -->
+    <section class="section">
+        <div class="container">
+            <div class="test-box" data-animate="left">
+                <h2>Slide From Left</h2>
+                <p>This box should slide in from the left when it comes into view.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Test Section 4 -->
+    <section class="section">
+        <div class="container">
+            <div class="test-box" data-animate="right">
+                <h2>Slide From Right</h2>
+                <p>This box should slide in from the right when it comes into view.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Test Section 5 - Staggered -->
+    <section class="section">
+        <div class="container">
+            <div class="test-box" data-animate="up" data-animate-delay="0">
+                <h2>Staggered 1</h2>
+                <p>First box (no delay)</p>
+            </div>
+            <div class="test-box" data-animate="up" data-animate-delay="200">
+                <h2>Staggered 2</h2>
+                <p>Second box (200ms delay)</p>
+            </div>
+            <div class="test-box" data-animate="up" data-animate-delay="400">
+                <h2>Staggered 3</h2>
+                <p>Third box (400ms delay)</p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // ===== GURU SCROLL BEHAVIOR =====
+        (function() {
+            const gurusSection = document.querySelector('.spiritual-gurus');
+            const navbar = document.querySelector('.navbar');
+            const scrollThreshold = 50;
+            
+            function handleScroll() {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                if (scrollTop > scrollThreshold) {
+                    if (gurusSection) {
+                        gurusSection.classList.add('gurus-hidden');
+                    }
+                    if (navbar) {
+                        navbar.classList.add('navbar-scrolled');
+                    }
+                } else {
+                    if (gurusSection) {
+                        gurusSection.classList.remove('gurus-hidden');
+                    }
+                    if (navbar) {
+                        navbar.classList.remove('navbar-scrolled');
+                    }
+                }
+            }
+            
+            window.addEventListener('scroll', handleScroll, { passive: true });
+            handleScroll(); // Initial check
+            
+            console.log('[Gurus] Script loaded, monitoring scroll');
+        })();
+
+        // ===== ANIMATIONS =====
+        (function() {
+            'use strict';
+
+            console.log('[Animations] Script starting...');
+
+            // Check for reduced motion
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            
+            if (prefersReducedMotion) {
+                console.log('[Animations] Reduced motion detected, disabling animations');
+                return;
+            }
+
+            // Wait for DOM to be ready
+            function initAnimations() {
+                // Get all elements with data-animate
+                const animatedElements = document.querySelectorAll('[data-animate]');
+                
+                if (!animatedElements.length) {
+                    console.log('[Animations] No elements with data-animate found');
+                    return;
+                }
+
+                console.log(`[Animations] Found ${animatedElements.length} elements to animate`);
+
+                // Filter out sticky elements
+                const elementsToAnimate = Array.from(animatedElements).filter(el => {
+                    const isInStickyMedia = el.closest('.sticky-media');
+                    if (isInStickyMedia) {
+                        el.style.opacity = '1';
+                        el.style.transform = 'none';
+                        console.log('[Animations] Skipping sticky element:', el);
+                        return false;
+                    }
+                    return true;
+                });
+
+                if (!elementsToAnimate.length) {
+                    console.log('[Animations] No animatable elements after filtering');
+                    return;
+                }
+
+                console.log(`[Animations] Will animate ${elementsToAnimate.length} elements`);
+
+                // Create observer
+                const observerOptions = {
+                    threshold: 0.2,
+                    rootMargin: '0px 0px -10% 0px'
+                };
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const target = entry.target;
+                            const delay = parseInt(target.getAttribute('data-animate-delay') || '0', 10);
+                            
+                            setTimeout(() => {
+                                target.classList.add('visible');
+                                console.log(`[Animations] Animated element with type: ${target.getAttribute('data-animate')}`);
+                            }, delay);
+                            
+                            observer.unobserve(target);
+                        }
+                    });
+                }, observerOptions);
+
+                // Start observing
+                elementsToAnimate.forEach(el => {
+                    el.classList.remove('visible');
+                    observer.observe(el);
+                });
+
+                console.log('[Animations] Observer started');
+            }
+
+            // Initialize when DOM is ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initAnimations);
+            } else {
+                // DOM is already ready
+                initAnimations();
+            }
+        })();
+    </script>
+</body>
+</html>

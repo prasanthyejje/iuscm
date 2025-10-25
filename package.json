@@ -1,0 +1,20 @@
+{
+  "name": "iuscm-website",
+  "version": "1.0.0",
+  "description": "Institute of Universal Self Consciousness Movement - Official Website",
+  "scripts": {
+    "dev": "tailwindcss -i ./input.css -o ./dist/output.css --watch",
+    "build": "tailwindcss -i ./input.css -o ./dist/output.css --minify",
+    "serve": "npx http-server -p 8000"
+  },
+  "keywords": ["spirituality", "meditation", "iuscm", "tailwindcss"],
+  "author": "IUSCM",
+  "license": "ISC",
+  "devDependencies": {
+    "@tailwindcss/forms": "^0.5.7",
+    "@tailwindcss/typography": "^0.5.10",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.32",
+    "tailwindcss": "^3.4.0"
+  }
+}

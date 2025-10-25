@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Gurus & Sticky Images</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+        }
+        
+        /* CSS Variable for sticky top */
+        :root {
+            --stick-top: 80px; /* Will be updated by JS */
+        }
+        
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-scrolled {
+            background: white;
+            color: black;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        /* Gurus Section */
+        .spiritual-gurus {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 10px;
+            background: rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .gurus-hidden {
+            display: none !important;
+        }
+        
+        .guru-item {
+            text-align: center;
+        }
+        
+        .guru-item img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+        }
+        
+        /* Main nav */
+        .main-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+        }
+        
+        /* Content sections */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .section {
+            padding: 80px 0;
+            margin-top: 100px; /* Space for fixed navbar */
+        }
+        
+        .section:first-of-type {
+            margin-top: 150px;
+        }
+        
+        /* Grid for sticky test */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 40px;
+            align-items: start;
+        }
+        
+        /* Sticky media */
+        .sticky-media {
+            position: sticky;
+            top: var(--stick-top);
+            align-self: start;
+            z-index: 1;
+        }
+        
+        .sticky-image {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .content-text {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .content-text h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .content-text p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            color: #666;
+        }
+        
+        /* Status display */
+        .status {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.2);
+            font-family: monospace;
+            font-size: 12px;
+            z-index: 1000;
+        }
+        
+        .status-line {
+            margin: 5px 0;
+        }
+        
+        .status-ok { color: green; }
+        .status-warn { color: orange; }
+        .status-error { color: red; }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <!-- Spiritual Gurus -->
+        <div class="spiritual-gurus">
+            <div class="guru-item">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%23888'/%3E%3C/svg%3E" alt="Guru 1">
+                <div>Guru 1</div>
+            </div>
+            <div class="guru-item">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%23888'/%3E%3C/svg%3E" alt="Guru 2">
+                <div>Guru 2</div>
+            </div>
+            <div class="guru-item">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%23888'/%3E%3C/svg%3E" alt="Guru 3">
+                <div>Guru 3</div>
+            </div>
+            <div class="guru-item">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%23888'/%3E%3C/svg%3E" alt="Guru 4">
+                <div>Guru 4</div>
+            </div>
+        </div>
+        <!-- Main Navigation -->
+        <div class="main-nav">
+            <div>Logo</div>
+            <div>Menu Items</div>
+        </div>
+    </nav>
+    
+    <!-- Test Content -->
+    <div class="container">
+        <!-- Section 1 -->
+        <section class="section">
+            <div class="content-grid">
+                <div class="content-text">
+                    <h2>Section 1: Testing Sticky Image</h2>
+                    <p>This is the first section with a sticky image on the right. As you scroll down, the image should stick to the top while this text scrolls.</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                    <p>Keep scrolling to see the sticky behavior...</p>
+                    <p>More content to make this section taller...</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <p>More content here...</p>
+                    <p>And even more content...</p>
+                    <p>The image on the right should be sticking to the top now.</p>
+                    <p>Continue scrolling...</p>
+                    <p>Almost at the end of this section...</p>
+                    <p>Last paragraph of section 1.</p>
+                </div>
+                <aside class="sticky-media">
+                    <div class="sticky-image">
+                        Sticky Image 1
+                    </div>
+                </aside>
+            </div>
+        </section>
+        
+        <!-- Section 2 -->
+        <section class="section">
+            <div class="content-grid">
+                <div class="content-text">
+                    <h2>Section 2: Another Sticky Test</h2>
+                    <p>This is the second section with another sticky image.</p>
+                    <p>The previous sticky image should have stopped sticking and this new one should start.</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                    <p>More content to test scrolling...</p>
+                    <p>Keep going...</p>
+                    <p>The sticky behavior should be working properly.</p>
+                    <p>Almost done with section 2...</p>
+                    <p>Final paragraph of section 2.</p>
+                </div>
+                <aside class="sticky-media">
+                    <div class="sticky-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                        Sticky Image 2
+                    </div>
+                </aside>
+            </div>
+        </section>
+        
+        <!-- Section 3 -->
+        <section class="section">
+            <div class="content-text" style="max-width: 600px; margin: 0 auto;">
+                <h2>Section 3: Regular Section</h2>
+                <p>This section doesn't have a sticky image, just regular content.</p>
+                <p>Scroll back to the top to test if the gurus reappear immediately.</p>
+                <p>The gurus should show when scroll position is less than 30px from top.</p>
+            </div>
+        </section>
+    </div>
+    
+    <!-- Status Display -->
+    <div class="status" id="status">
+        <div class="status-line">Scroll: <span id="scroll-pos">0</span>px</div>
+        <div class="status-line">Gurus: <span id="gurus-status">visible</span></div>
+        <div class="status-line">Sticky Top: <span id="sticky-top">80px</span></div>
+        <div class="status-line">Sticky Count: <span id="sticky-count">0</span></div>
+    </div>
+    
+    <script>
+        // ===== GURUS SCROLL BEHAVIOR =====
+        (function() {
+            const gurusSection = document.querySelector('.spiritual-gurus');
+            const navbar = document.querySelector('.navbar');
+            const scrollThreshold = 30;
+            
+            let isHidden = false;
+            let ticking = false;
+            
+            function updateGurus(scrollTop) {
+                const statusEl = document.getElementById('gurus-status');
+                
+                if (scrollTop <= scrollThreshold) {
+                    if (isHidden) {
+                        if (gurusSection) {
+                            gurusSection.classList.remove('gurus-hidden');
+                            gurusSection.style.display = '';
+                        }
+                        if (navbar) {
+                            navbar.classList.remove('navbar-scrolled');
+                        }
+                        isHidden = false;
+                        if (statusEl) statusEl.textContent = 'visible';
+                        statusEl.className = 'status-ok';
+                    }
+                } else {
+                    if (!isHidden) {
+                        if (gurusSection) {
+                            gurusSection.classList.add('gurus-hidden');
+                        }
+                        if (navbar) {
+                            navbar.classList.add('navbar-scrolled');
+                        }
+                        isHidden = true;
+                        if (statusEl) statusEl.textContent = 'hidden';
+                        statusEl.className = 'status-warn';
+                    }
+                }
+            }
+            
+            function handleScroll() {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                document.getElementById('scroll-pos').textContent = Math.round(scrollTop);
+                
+                if (!ticking) {
+                    window.requestAnimationFrame(function() {
+                        updateGurus(scrollTop);
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+                
+                // Immediate update for exact top
+                if (scrollTop === 0) {
+                    updateGurus(0);
+                }
+            }
+            
+            window.addEventListener('scroll', handleScroll, { passive: true });
+            
+            // Scroll end listener
+            let scrollTimeout;
+            window.addEventListener('scroll', function() {
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(function() {
+                    const finalScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                    updateGurus(finalScrollTop);
+                }, 150);
+            }, { passive: true });
+            
+            // Initial check
+            setTimeout(function() {
+                const initialScroll = window.pageYOffset || document.documentElement.scrollTop;
+                updateGurus(initialScroll);
+            }, 100);
+        })();
+        
+        // ===== STICKY INITIALIZATION =====
+        (function() {
+            function updateStickyTop() {
+                const navbar = document.getElementById('navbar');
+                if (!navbar) return;
+                
+                const navbarHeight = navbar.getBoundingClientRect().height;
+                const stickyTop = Math.round(navbarHeight) + 16;
+                
+                document.documentElement.style.setProperty('--stick-top', `${stickyTop}px`);
+                document.getElementById('sticky-top').textContent = `${stickyTop}px`;
+                
+                // Check sticky elements
+                const stickyElements = document.querySelectorAll('.sticky-media');
+                document.getElementById('sticky-count').textContent = stickyElements.length;
+                
+                // Ensure sticky positioning
+                stickyElements.forEach(el => {
+                    const styles = window.getComputedStyle(el);
+                    if (styles.position !== 'sticky') {
+                        document.getElementById('sticky-count').className = 'status-error';
+                        console.warn('Sticky element not sticky!', el);
+                    } else {
+                        document.getElementById('sticky-count').className = 'status-ok';
+                    }
+                });
+            }
+            
+            // Initialize
+            updateStickyTop();
+            
+            // Update on resize
+            window.addEventListener('resize', updateStickyTop);
+            
+            // Update on scroll (for navbar height changes)
+            window.addEventListener('scroll', updateStickyTop, { passive: true });
+            
+            // Update on load
+            window.addEventListener('load', updateStickyTop);
+        })();
+    </script>
+</body>
+</html>
