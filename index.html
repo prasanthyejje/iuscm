@@ -1156,68 +1156,6 @@
             console.log('[Smooth Scroll] ✅ Initialized');
         })();
 
-        // ===== FORM VALIDATION =====
-        (function () {
-            const forms = document.querySelectorAll('form[data-validate]');
-
-            forms.forEach(form => {
-                // Skip forms with custom handlers
-                if (form.id === 'magazine-form' || form.id === 'contact-form') return;
-
-                form.addEventListener('submit', function (e) {
-                    e.preventDefault();
-
-                    let isValid = true;
-                    const inputs = form.querySelectorAll('[data-rules]');
-
-                    inputs.forEach(input => {
-                        const rules = input.getAttribute('data-rules').split(' ');
-                        const value = input.value.trim();
-
-                        // Clear previous errors
-                        input.classList.remove('border-red-500');
-
-                        // Check required
-                        if (rules.includes('required') && !value) {
-                            isValid = false;
-                            input.classList.add('border-red-500');
-                        }
-
-                        // Check email
-                        if (rules.includes('email') && value) {
-                            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                            if (!emailRegex.test(value)) {
-                                isValid = false;
-                                input.classList.add('border-red-500');
-                            }
-                        }
-
-                        // Check minLength
-                        const minLengthRule = rules.find(r => r.startsWith('minLength:'));
-                        if (minLengthRule && value) {
-                            const minLength = parseInt(minLengthRule.split(':')[1]);
-                            if (value.length < minLength) {
-                                isValid = false;
-                                input.classList.add('border-red-500');
-                            }
-                        }
-                    });
-
-                    if (isValid) {
-                        console.log('[Form] Valid submission');
-                        alert('Work in progress');
-                        form.reset();
-                    } else {
-                        console.log('[Form] Validation failed');
-                        alert('Work in progress');
-                    }
-                });
-            });
-
-            if (forms.length) {
-                console.log(`[Form Validation] ✅ Initialized ${forms.length} forms`);
-            }
-        })();
 
         // ===== MAGAZINE SUBSCRIPTION HANDLER =====
         // document.addEventListener('DOMContentLoaded', () => {
@@ -1347,9 +1285,22 @@
                     const name = magazineForm.querySelector('input[name="name"]').value.trim();
                     const email = magazineForm.querySelector('input[name="email"]').value.trim();
 
-                    // Validate
-                    if (!name || !email) {
-                        showSnackbar('Please fill in all fields', 'error');
+                    // Validate name
+                    if (!name) {
+                        showSnackbar('Please enter your name to subscribe', 'error');
+                        return;
+                    }
+
+                    // Validate email
+                    if (!email) {
+                        showSnackbar('Please enter your email to subscribe', 'error');
+                        return;
+                    }
+
+                    // Validate email format
+                    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                    if (!emailRegex.test(email)) {
+                        showSnackbar('Please enter a valid email address to subscribe', 'error');
                         return;
                     }
 
@@ -1409,9 +1360,28 @@
                     const email = contactForm.querySelector('input[name="email"]').value.trim();
                     const message = contactForm.querySelector('textarea[name="message"]').value.trim();
 
-                    // Validate
-                    if (!name || !email || !message) {
-                        showSnackbar('Please fill in all fields', 'error');
+                    // Validate name
+                    if (!name) {
+                        showSnackbar('Please enter your name', 'error');
+                        return;
+                    }
+
+                    // Validate email
+                    if (!email) {
+                        showSnackbar('Please enter your email', 'error');
+                        return;
+                    }
+
+                    // Validate email format
+                    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                    if (!emailRegex.test(email)) {
+                        showSnackbar('Please enter a valid email address', 'error');
+                        return;
+                    }
+
+                    // Validate message
+                    if (!message) {
+                        showSnackbar('Please enter your message', 'error');
                         return;
                     }
 
