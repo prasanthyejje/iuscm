@@ -363,6 +363,102 @@
                 padding-bottom: 5rem !important;
             }
         }
+
+        /* Snackbar Notification Styles */
+        .snackbar {
+            visibility: hidden;
+            min-width: 300px;
+            max-width: 500px;
+            background-color: #323232;
+            color: #fff;
+            text-align: left;
+            border-radius: 8px;
+            padding: 16px 24px;
+            position: fixed;
+            z-index: 9999;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .snackbar.show {
+            visibility: visible;
+            animation: snackbar-fadein 0.3s, snackbar-fadeout 0.3s 2.7s;
+        }
+
+        .snackbar.success {
+            background-color: #4caf50;
+        }
+
+        .snackbar.error {
+            background-color: #f44336;
+        }
+
+        .snackbar-icon {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        @keyframes snackbar-fadein {
+            from {
+                bottom: 0;
+                opacity: 0;
+            }
+            to {
+                bottom: 30px;
+                opacity: 1;
+            }
+        }
+
+        @keyframes snackbar-fadeout {
+            from {
+                bottom: 30px;
+                opacity: 1;
+            }
+            to {
+                bottom: 0;
+                opacity: 0;
+            }
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 640px) {
+            .snackbar {
+                min-width: calc(100% - 32px);
+                max-width: calc(100% - 32px);
+                left: 16px;
+                right: 16px;
+                transform: none;
+                bottom: 16px;
+            }
+
+            @keyframes snackbar-fadein {
+                from {
+                    bottom: 0;
+                    opacity: 0;
+                }
+                to {
+                    bottom: 16px;
+                    opacity: 1;
+                }
+            }
+
+            @keyframes snackbar-fadeout {
+                from {
+                    bottom: 16px;
+                    opacity: 1;
+                }
+                to {
+                    bottom: 0;
+                    opacity: 0;
+                }
+            }
+        }
     </style>
 </head>
 
@@ -859,9 +955,31 @@
         <p class="text-lg text-[#3a2e12] leading-[1.5] sm:text-base">© 2025 IUSCM. All rights reserved.</p>
     </footer>
 
+    <!-- Snackbar Notification Container -->
+    <div id="snackbar" class="snackbar"></div>
+
     <!-- All JavaScript - Working Version -->
     <script>
         console.log('=== IUSCM Website Loaded ===');
+
+        // ===== SNACKBAR NOTIFICATION FUNCTION =====
+        function showSnackbar(message, type = 'success') {
+            const snackbar = document.getElementById('snackbar');
+            
+            // Set icon based on type
+            const icon = type === 'success' ? '✓' : '✕';
+            
+            // Set message with icon
+            snackbar.innerHTML = `<span class="snackbar-icon">${icon}</span><span>${message}</span>`;
+            
+            // Add type class
+            snackbar.className = 'snackbar show ' + type;
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                snackbar.className = snackbar.className.replace('show', '');
+            }, 5000);
+        }
 
         // ===== ANIMATION SYSTEM DISABLED =====
         (function () {
@@ -1231,7 +1349,7 @@
 
                     // Validate
                     if (!name || !email) {
-                        alert('Please fill in all fields');
+                        showSnackbar('Please fill in all fields', 'error');
                         return;
                     }
 
@@ -1263,14 +1381,14 @@
                         console.log('[Magazine] Response:', data);
 
                         if (data.success) {
-                            alert('✅ ' + data.message);
+                            showSnackbar(data.message, 'success');
                             magazineForm.reset();
                         } else {
-                            alert('❌ Subscription failed: ' + data.error);
+                            showSnackbar('Subscription failed: ' + data.error, 'error');
                         }
                     } catch (error) {
                         console.error('[Magazine] Error:', error);
-                        alert('❌ Something went wrong. Please try again later.');
+                        showSnackbar('Something went wrong. Please try again later.', 'error');
                     } finally {
                         // Re-enable button
                         submitBtn.disabled = false;
@@ -1293,7 +1411,7 @@
 
                     // Validate
                     if (!name || !email || !message) {
-                        alert('Please fill in all fields');
+                        showSnackbar('Please fill in all fields', 'error');
                         return;
                     }
 
@@ -1325,14 +1443,14 @@
                         console.log('[Contact] Response:', data);
 
                         if (data.success) {
-                            alert('✅ ' + data.message);
+                            showSnackbar(data.message, 'success');
                             contactForm.reset();
                         } else {
-                            alert('❌ Message failed to send: ' + data.error);
+                            showSnackbar('Message failed to send: ' + data.error, 'error');
                         }
                     } catch (error) {
                         console.error('[Contact] Error:', error);
-                        alert('❌ Something went wrong. Please try again later.');
+                        showSnackbar('Something went wrong. Please try again later.', 'error');
                     } finally {
                         // Re-enable button
                         submitBtn.disabled = false;
