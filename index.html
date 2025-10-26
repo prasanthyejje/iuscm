@@ -1245,8 +1245,15 @@
                         console.log('[Magazine] Submitting:', { name, email });
 
                         // Call Firebase function
-                        // http://localhost:5001/iuscm-e6a1f/us-central1/sendEmail
-                        const response = await fetch('https://us-central1-iuscm-e6a1f.cloudfunctions.net/sendEmail', {
+                        // Production: https://us-central1-iuscm-e6a1f.cloudfunctions.net/sendEmail
+                        // Local: http://127.0.0.1:5001/iuscm-e6a1f/us-central1/sendEmail
+                        const apiUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+                            ? 'http://127.0.0.1:5001/iuscm-e6a1f/us-central1/sendEmail'
+                            : 'https://us-central1-iuscm-e6a1f.cloudfunctions.net/sendEmail';
+                        
+                        console.log('[Magazine] API URL:', apiUrl);
+                        
+                        const response = await fetch(apiUrl, {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({ name, email })
@@ -1300,7 +1307,15 @@
                         console.log('[Contact] Submitting:', { name, email, message });
 
                         // Call Firebase function for contact form
-                        const response = await fetch('https://us-central1-iuscm-e6a1f.cloudfunctions.net/sendContactEmail', {
+                        // Production: https://us-central1-iuscm-e6a1f.cloudfunctions.net/sendContactEmail
+                        // Local: http://127.0.0.1:5001/iuscm-e6a1f/us-central1/sendContactEmail
+                        const apiUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+                            ? 'http://127.0.0.1:5001/iuscm-e6a1f/us-central1/sendContactEmail'
+                            : 'https://us-central1-iuscm-e6a1f.cloudfunctions.net/sendContactEmail';
+                        
+                        console.log('[Contact] API URL:', apiUrl);
+                        
+                        const response = await fetch(apiUrl, {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({ name, email, message })

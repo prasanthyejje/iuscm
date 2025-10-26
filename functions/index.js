@@ -1,75 +1,24 @@
-// /**
-//  * Import function triggers from their respective submodules:
-//  *
-//  * const {onCall} = require("firebase-functions/v2/https");
-//  * const {onDocumentWritten} = require("firebase-functions/v2/firestore");
-//  *
-//  * See a full list of supported triggers at https://firebase.google.com/docs/functions
-//  */
-
-// const {setGlobalOptions} = require("firebase-functions");
-// const {onRequest} = require("firebase-functions/https");
-// const logger = require("firebase-functions/logger");
-
-// // For cost control, you can set the maximum number of containers that can be
-// // running at the same time. This helps mitigate the impact of unexpected
-// // traffic spikes by instead downgrading performance. This limit is a
-// // per-function limit. You can override the limit for each function using the
-// // `maxInstances` option in the function's options, e.g.
-// // `onRequest({ maxInstances: 5 }, (req, res) => { ... })`.
-// // NOTE: setGlobalOptions does not apply to functions using the v1 API. V1
-// // functions should each use functions.runWith({ maxInstances: 10 }) instead.
-// // In the v1 API, each function can only serve one request per container, so
-// // this will be the maximum concurrent request count.
-// setGlobalOptions({ maxInstances: 10 });
-
-// // Create and deploy your first functions
-// // https://firebase.google.com/docs/functions/get-started
-
-// // exports.helloWorld = onRequest((request, response) => {
-// //   logger.info("Hello logs!", {structuredData: true});
-// //   response.send("Hello from Firebase!");
-// // });
-
 const functions = require("firebase-functions");
 const nodemailer = require("nodemailer");
 
 // SMTP Configuration
-// OPTION 1: Gmail (for testing - replace with your Gmail credentials)
-// const transporter = nodemailer.createTransport({
-//   service: "gmail",
-//   auth: {
-//     user: "usaiuscm@gmail.com", // Replace with your Gmail
-//     pass: "rnpa jtbm gizo lfel", // Use Gmail App Password, not regular password
-//   },
-// });
-
+// Office365 SMTP - Using App Password for authentication
 const transporter = nodemailer.createTransport({
   host: "smtp.office365.com",
   port: 587,
-  secure: false, // TLS
+  secure: false, // Use STARTTLS
   auth: {
-    user: "spiritualmagazine@iuscm.org ",
-    pass: "Iuscm@USA ", // not app password here
+    user: "spiritualmagazine@iuscm.org",
+    pass: "fpftbmkpbprswsjj", // App Password from Microsoft Security
   },
   tls: {
-    ciphers: "SSLv3",
+    rejectUnauthorized: false,
+    minVersion: "TLSv1.2",
   },
+  authMethod: "LOGIN",
+  debug: true,
+  logger: true,
 });
-
-// OPTION 2: Outlook (currently disabled - needs SMTP AUTH enabled in Microsoft 365)
-// const transporter = nodemailer.createTransport({
-//   host: "smtp.office365.com",
-//   port: 587,
-//   secure: false,
-//   auth: {
-//     user: "spiritualmagazine@iuscm.org",
-//     pass: "Iuscm@USA",
-//   },
-//   tls: {
-//     ciphers: "SSLv3",
-//   },
-// });
 
 // Cloud Function to send an email
 exports.sendEmail = functions.https.onRequest(async (req, res) => {
@@ -77,7 +26,6 @@ exports.sendEmail = functions.https.onRequest(async (req, res) => {
   res.set("Access-Control-Allow-Origin", "*");
 
   if (req.method === "OPTIONS") {
-    res.set("Access-Control-Allow-Methods", "POST");
     res.set("Access-Control-Allow-Headers", "Content-Type");
     return res.status(204).send("");
   }
@@ -95,7 +43,7 @@ exports.sendEmail = functions.https.onRequest(async (req, res) => {
 
     // Email to subscriber
     const subscriberMailOptions = {
-      from: "prashanthyejje@gmail.com", // Change this to match your SMTP user
+      from: "spiritualmagazine@iuscm.org",
       to: email,
       subject: "Welcome to IUSCM Quarterly Spiritual Magazine",
       text: `Dear ${name},\n\nThank you for subscribing to our Quarterly Spiritual Magazine! You will receive teachings from Self-realized Masters directly to your inbox.\n\nBlessings,\nIUSCM Team`,
@@ -103,7 +51,7 @@ exports.sendEmail = functions.https.onRequest(async (req, res) => {
 
     // Email to admin (notification)
     const adminMailOptions = {
-      from: "prashanthyejje@gmail.com", // Change this to match your SMTP user
+      from: "spiritualmagazine@iuscm.org",
       to: "spiritualmagazine@iuscm.org", // Admin email to receive notifications
       subject: "New Magazine Subscription",
       text: `New subscription:\n\nName: ${name}\nEmail: ${email}`,
