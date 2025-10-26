@@ -8,6 +8,7 @@
     const navbarToggle = document.querySelector('.navbar-toggle');
     const mobileNav = document.querySelector('.mobile-nav');
     const mobileNavClose = document.querySelector('.mobile-nav-close');
+    const mobileNavBackdrop = document.querySelector('.mobile-nav-backdrop');
     const navLinks = document.querySelectorAll('.navbar-menu a, .mobile-nav-menu a');
     
     // State
@@ -34,13 +35,9 @@
             mobileNavClose.addEventListener('click', closeMobileMenu);
         }
         
-        // Mobile nav overlay click to close
-        if (mobileNav) {
-            mobileNav.addEventListener('click', function(e) {
-                if (e.target === mobileNav) {
-                    closeMobileMenu();
-                }
-            });
+        // Mobile nav backdrop click to close
+        if (mobileNavBackdrop) {
+            mobileNavBackdrop.addEventListener('click', closeMobileMenu);
         }
         
         // Navigation link clicks
@@ -135,6 +132,14 @@
         isMobileMenuOpen = true;
         navbarToggle.classList.add('active');
         mobileNav.classList.add('active');
+        
+        // Show backdrop
+        if (mobileNavBackdrop) {
+            mobileNavBackdrop.classList.add('active');
+            mobileNavBackdrop.style.opacity = '1';
+            mobileNavBackdrop.style.visibility = 'visible';
+        }
+        
         document.body.style.overflow = 'hidden';
         
         // Accessibility
@@ -160,6 +165,13 @@
         
         if (mobileNav) {
             mobileNav.classList.remove('active');
+        }
+        
+        // Hide backdrop
+        if (mobileNavBackdrop) {
+            mobileNavBackdrop.classList.remove('active');
+            mobileNavBackdrop.style.opacity = '0';
+            mobileNavBackdrop.style.visibility = 'hidden';
         }
         
         document.body.style.overflow = '';
