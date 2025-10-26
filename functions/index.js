@@ -193,10 +193,107 @@ exports.sendContactEmail = functions.https.onRequest(async (req, res) => {
 
     // Confirmation email to user
     const userMailOptions = {
-      from: "spiritualmagazine@iuscm.org", // Change this to match your SMTP user
+      from: "spiritualmagazine@iuscm.org",
       to: email,
-      subject: "Thank you for contacting IUSCM",
-      text: `Dear ${name},\n\nThank you for reaching out to us. We have received your message and will get back to you as soon as possible.\n\nYour message:\n${message}\n\nBlessings,\nIUSCM Team`,
+      subject: "We've Received Your Message - IUSCM",
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        </head>
+        <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f5f0;">
+          <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f5f5f0; padding: 40px 20px;">
+            <tr>
+              <td align="center">
+                <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                  
+                  <!-- Header with Golden Accent -->
+                  <tr>
+                    <td style="background: linear-gradient(135deg, #D4AF37 0%, #C9A961 100%); padding: 40px 30px; text-align: center;">
+                      <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 600; letter-spacing: 0.5px;">
+                        Institute of Universal Self-Consciousness Movement
+                      </h1>
+                    </td>
+                  </tr>
+                  
+                  <!-- Main Content -->
+                  <tr>
+                    <td style="padding: 50px 40px;">
+                      <p style="margin: 0 0 20px 0; color: #2C2C2C; font-size: 18px; line-height: 1.6;">
+                        Dear <strong>${name}</strong>,
+                      </p>
+                      
+                      <p style="margin: 0 0 25px 0; color: #4A4A4A; font-size: 16px; line-height: 1.8;">
+                        Thank you for reaching out to us. We have received your message and deeply appreciate your interest in the Institute of Universal Self-Consciousness Movement.
+                      </p>
+                      
+                      <p style="margin: 0 0 25px 0; color: #4A4A4A; font-size: 16px; line-height: 1.8;">
+                        Our team is carefully reviewing your inquiry and will respond to you within <strong>24-48 hours</strong>. We are committed to providing you with thoughtful guidance and support on your spiritual journey.
+                      </p>
+                      
+                      <!-- Message Summary Box -->
+                      <div style="background-color: #F9F9F9; border: 1px solid #E5E5E5; border-radius: 6px; padding: 25px; margin: 30px 0;">
+                        <p style="margin: 0 0 12px 0; color: #6B6B6B; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
+                          Your Message:
+                        </p>
+                        <p style="margin: 0; color: #2C2C2C; font-size: 15px; line-height: 1.7; white-space: pre-wrap;">
+${message}
+                        </p>
+                      </div>
+                      
+                      <p style="margin: 0 0 25px 0; color: #4A4A4A; font-size: 16px; line-height: 1.8;">
+                        In the meantime, we invite you to explore our website to learn more about:
+                      </p>
+                      
+                      <ul style="margin: 0 0 25px 0; padding-left: 20px; color: #4A4A4A; font-size: 16px; line-height: 1.8;">
+                        <li style="margin-bottom: 10px;">The path to Universal Self-Consciousness</li>
+                        <li style="margin-bottom: 10px;">Pranahuti Meditation practices</li>
+                        <li style="margin-bottom: 10px;">Teachings from Self-realized Masters</li>
+                        <li style="margin-bottom: 10px;">Our Quarterly Spiritual Magazine</li>
+                      </ul>
+                      
+                      <div style="background-color: #FFF9D3; border-left: 4px solid #D4AF37; padding: 20px; margin: 30px 0;">
+                        <p style="margin: 0; color: #3A2E12; font-size: 15px; line-height: 1.7; font-style: italic;">
+                          "Oneness of mankind is not merely an intellectual understanding; it is organically integral to one's Consciousness."
+                        </p>
+                        <p style="margin: 10px 0 0 0; color: #6B6B6B; font-size: 14px; text-align: right;">
+                          — Dr. Satyanarayana Chillapa (Swamiji)
+                        </p>
+                      </div>
+                      
+                      <p style="margin: 0 0 10px 0; color: #2C2C2C; font-size: 16px; line-height: 1.6;">
+                        With profound blessings,
+                      </p>
+                      <p style="margin: 0; color: #2C2C2C; font-size: 16px; font-weight: 400;">
+                        The IUSCM Team
+                      </p>
+                    </td>
+                  </tr>
+                  
+                  <!-- Footer -->
+                  <tr>
+                    <td style="background-color: #2C2C2C; padding: 30px 40px; text-align: center;">
+                      <p style="margin: 0 0 10px 0; color: #D4AF37; font-size: 14px; font-weight: 600;">
+                        Institute of Universal Self-Consciousness Movement
+                      </p>
+                      <p style="margin: 0 0 15px 0; color: #CCCCCC; font-size: 13px; line-height: 1.6;">
+                        Propagating the Oneness of Mankind through Universal Self-Consciousness
+                      </p>
+                      <p style="margin: 0; color: #999999; font-size: 12px;">
+                        This is an automated confirmation. Please do not reply to this email.
+                      </p>
+                    </td>
+                  </tr>
+                  
+                </table>
+              </td>
+            </tr>
+          </table>
+        </body>
+        </html>
+      `,
     };
 
     // Send both emails
