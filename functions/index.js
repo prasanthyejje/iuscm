@@ -31,14 +31,14 @@ exports.sendEmail = functions.https.onRequest(async (req, res) => {
   }
 
   try {
-    const { name, email } = req.body;
+    const {name, email} = req.body;
 
-    console.log("Subscription data received:", { name, email });
+    console.log("Subscription data received:", {name, email});
 
     if (!name || !email) {
       return res
-        .status(400)
-        .json({ success: false, error: "Missing name or email" });
+          .status(400)
+          .json({success: false, error: "Missing name or email"});
     }
 
     // Email to subscriber
@@ -157,7 +157,7 @@ exports.sendEmail = functions.https.onRequest(async (req, res) => {
     });
   } catch (error) {
     console.error("Error sending email:", error.message);
-    return res.status(500).json({ success: false, error: error.message });
+    return res.status(500).json({success: false, error: error.message});
   }
 });
 
@@ -173,14 +173,14 @@ exports.sendContactEmail = functions.https.onRequest(async (req, res) => {
   }
 
   try {
-    const { name, email, message } = req.body;
+    const {name, email, message} = req.body;
 
-    console.log("Contact form data received:", { name, email, message });
+    console.log("Contact form data received:", {name, email, message});
 
     if (!name || !email || !message) {
       return res
-        .status(400)
-        .json({ success: false, error: "Missing required fields" });
+          .status(400)
+          .json({success: false, error: "Missing required fields"});
     }
 
     // Email to admin (usaiuscm@gmail.com)
@@ -308,6 +308,6 @@ ${message}
     });
   } catch (error) {
     console.error("Error sending contact email:", error.message);
-    return res.status(500).json({ success: false, error: error.message });
+    return res.status(500).json({success: false, error: error.message});
   }
 });
