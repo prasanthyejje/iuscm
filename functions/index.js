@@ -97,15 +97,15 @@ exports.sendContactEmail = functions.https.onRequest(async (req, res) => {
 
     // Email to admin (usaiuscm@gmail.com)
     const adminMailOptions = {
-      from: "usaiuscm@gmail.com", // Change this to match your SMTP user
-      to: "usaiuscm@gmail.com",
+      from: "spiritualmagazine@iuscm.org", // Change this to match your SMTP user
+      to: "spiritualmagazine@iuscm.org",
       subject: `New Contact Form Submission from ${name}`,
       text: `You have received a new message from the IUSCM website contact form:\n\nName: ${name}\nEmail: ${email}\n\nMessage:\n${message}\n\n---\nYou can reply directly to: ${email}`,
     };
 
     // Confirmation email to user
     const userMailOptions = {
-      from: "usaiuscm@gmail.com", // Change this to match your SMTP user
+      from: "spiritualmagazine@iuscm.org", // Change this to match your SMTP user
       to: email,
       subject: "Thank you for contacting IUSCM",
       text: `Dear ${name},\n\nThank you for reaching out to us. We have received your message and will get back to you as soon as possible.\n\nYour message:\n${message}\n\nBlessings,\nIUSCM Team`,

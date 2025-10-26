@@ -1158,120 +1158,6 @@
 
 
         // ===== MAGAZINE SUBSCRIPTION HANDLER =====
-        // document.addEventListener('DOMContentLoaded', () => {
-        //     const form = document.querySelector('#magazine-form');
-        //     const contactForm = document.querySelector('#contact-form');
-
-        //     if (form) {
-        //         form.addEventListener('submit', async (e) => {
-        //             e.preventDefault();
-
-        //             // Get form values
-        //             const name = form.querySelector('input[name="name"]').value.trim();
-        //             const email = form.querySelector('input[name="email"]').value.trim();
-
-        //             // Validate
-        //             if (!name || !email) {
-        //                 alert('Please fill in all fields');
-        //                 return;
-        //             }
-
-        //             // Disable button during submission
-        //             const submitBtn = form.querySelector('button[type="submit"]');
-        //             const originalText = submitBtn.textContent;
-        //             submitBtn.disabled = true;
-        //             submitBtn.textContent = 'Subscribing...';
-
-        //             try {
-        //                 console.log('[Magazine] Submitting:', { name, email });
-
-        //                 // Call Firebase function
-        //                 const response = await fetch('http://localhost:5001/iuscm-e6a1f/us-central1/sendEmail', {
-        //                     method: 'POST',
-        //                     headers: { 'Content-Type': 'application/json' },
-        //                     body: JSON.stringify({ name, email })
-        //                 });
-
-        //                 const data = await response.json();
-        //                 console.log('[Magazine] Response:', data);
-
-        //                 if (data.success) {
-        //                     alert('✅ ' + data.message);
-        //                     form.reset();
-        //                 } else {
-        //                     alert('❌ Subscription failed: ' + data.error);
-        //                 }
-        //             } catch (error) {
-        //                 console.error('[Magazine] Error:', error);
-        //                 alert('❌ Something went wrong. Please try again later.');
-        //             } finally {
-        //                 // Re-enable button
-        //                 submitBtn.disabled = false;
-        //                 submitBtn.textContent = originalText;
-        //             }
-        //         });
-
-        //         console.log('[Magazine] ✅ Subscription form initialized');
-        //     }
-        // });
-
-        // if (contactForm) {
-        //     form.addEventListener('submit', async (e) => {
-        //         e.preventDefault();
-
-        //         // Get form values
-        //         const name = form.querySelector('input[name="name"]').value.trim();
-        //         const email = form.querySelector('input[name="email"]').value.trim();
-        //         const message = form.querySelector('input[name="message"]').value.trim();
-        //         console.log('[Contact] Submitting:', { name, email, message });
-
-        //         // Validate
-        //         if (!name || !email) {
-        //             alert('Please fill in all fields');
-        //             return;
-        //         }
-
-        //         // Disable button during submission
-        //         const submitBtn = form.querySelector('button[type="submit"]');
-        //         const originalText = submitBtn.textContent;
-        //         submitBtn.disabled = true;
-        //         submitBtn.textContent = 'Subscribing...';
-
-        //         try {
-        //             console.log('[Magazine] Submitting:', { name, email });
-
-        //             // Call Firebase function
-        //             const response = await fetch('http://localhost:5001/iuscm-e6a1f/us-central1/sendEmail', {
-        //                 method: 'POST',
-        //                 headers: { 'Content-Type': 'application/json' },
-        //                 body: JSON.stringify({ name, email })
-        //             });
-
-        //             const data = await response.json();
-        //             console.log('[Magazine] Response:', data);
-
-        //             if (data.success) {
-        //                 alert('✅ ' + data.message);
-        //                 form.reset();
-        //             } else {
-        //                 alert('❌ Subscription failed: ' + data.error);
-        //             }
-        //         } catch (error) {
-        //             console.error('[Magazine] Error:', error);
-        //             alert('❌ Something went wrong. Please try again later.');
-        //         } finally {
-        //             // Re-enable button
-        //             submitBtn.disabled = false;
-        //             submitBtn.textContent = originalText;
-        //         }
-        //     });
-
-        //     console.log('[Magazine] ✅ Subscription form initialized');
-        // }
-        // });
-        // });
-
-        // ===== MAGAZINE SUBSCRIPTION HANDLER =====
         (function () {
             const magazineForm = document.querySelector('#magazine-form');
             const contactForm = document.querySelector('#contact-form');
@@ -1362,13 +1248,13 @@
 
                     // Validate name
                     if (!name) {
-                        showSnackbar('Please enter your name', 'error');
+                        showSnackbar('Name is required to send your message', 'error');
                         return;
                     }
 
                     // Validate email
                     if (!email) {
-                        showSnackbar('Please enter your email', 'error');
+                        showSnackbar('Email is required to send your message', 'error');
                         return;
                     }
 
@@ -1381,7 +1267,7 @@
 
                     // Validate message
                     if (!message) {
-                        showSnackbar('Please enter your message', 'error');
+                        showSnackbar('Message is required to contact us', 'error');
                         return;
                     }
 
