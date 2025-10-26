@@ -587,13 +587,13 @@
                 <div class="hidden lg:block"></div>
 
                 <!-- Content -->
-                <div class="text-white max-w-[720px] flex flex-col gap-8 px-6 sm:px-4 lg:px-0 mx-auto lg:mx-0">
+                <div class="text-white max-w-[720px] flex flex-col gap-8 px-6 sm:px-4 lg:px-0 mx-auto lg:mx-0 mt-6 lg:mt-0">
                     <!-- Hero Text -->
-                    <div class="flex flex-col gap-4 text-center lg:text-left">
-                        <h1 class="text-white">
+                    <div class="flex flex-col gap-4 text-center lg:text-left pt-5">
+                        <h1 class="text-white font-bold">
                             Institute of Universal Self Consciousness Movement
                         </h1>
-                        <p class="text-white/95 text-lg leading-[1.6]">
+                        <p class="text-white/95 text-lg leading-[1.6] font-normal">
                             Bringing ancient Vedic wisdom to life through Meditation and Universal Consciousness
                         </p>
                     </div>
@@ -774,15 +774,17 @@
                     <form data-validate id="magazine-form" action="javascript:void(0)"
                         class="flex flex-col gap-4 w-full">
                         <input type="text"
-                            class="w-full px-4 py-2 border border-gold-dark/40 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-gold"
+                            class="w-full max-w-md px-4 py-3 border border-gold-dark/40 rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-brand-gold"
                             placeholder="Enter your Name" name="name" data-rules="required name" aria-label="Name">
                         <input type="email"
-                            class="w-full px-4 py-2 border border-gold-dark/40 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-gold"
+                            class="w-full max-w-md px-4 py-3 border border-gold-dark/40 rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-brand-gold"
                             placeholder="Enter your email" name="email" data-rules="required email" aria-label="Email">
-                        <button type="submit"
-                            class="w-full md:w-auto px-6 py-3 bg-[#C9A961] text-[#2d2308] font-medium text-base rounded-lg hover:bg-[#b89851] transition-colors md:self-start">
-                            Subscribe to Receive →
-                        </button>
+                        <div class="w-full md:w-auto flex justify-center md:justify-start">
+                            <button type="submit"
+                                class="block w-full max-w-[280px] md:w-auto text-center px-6 py-3 bg-[#C9A961] text-[#2d2308] font-medium text-base rounded-lg hover:bg-[#b89851] transition-colors">
+                                Subscribe to Receive →
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -848,8 +850,8 @@
                         </p>
                     </div>
 
-                    <div>
-                        <button disabled class="px-6 py-3 text-base rounded-lg cursor-not-allowed"
+                    <div class="w-full md:w-auto flex justify-center md:justify-start">
+                        <button disabled class="block w-full max-w-[280px] md:w-auto text-center px-6 py-3 text-base rounded-lg cursor-not-allowed"
                             style="opacity: 0.5; pointer-events: none; background-color: rgba(201, 169, 97, 0.5); color: rgba(45, 35, 8, 0.5); font-weight: 500;">
                             Order Now →
                         </button>
@@ -897,10 +899,12 @@
                             style="height: 200px;" name="message" placeholder="Type your message..."
                             data-rules="required minLength:10" aria-required="true"></textarea>
                     </div>
-                    <button type="submit"
-                        class="w-full md:w-auto px-6 py-3 bg-[#C9A961] text-[#2d2308] font-medium text-base rounded-lg hover:bg-[#b89851] transition-colors">
-                        Send Message →
-                    </button>
+                    <div class="w-full md:w-auto flex justify-center md:justify-start">
+                        <button type="submit"
+                            class="block w-full max-w-[280px] md:w-auto text-center px-6 py-3 bg-[#C9A961] text-[#2d2308] font-medium text-base rounded-lg hover:bg-[#b89851] transition-colors">
+                            Send Message →
+                        </button>
+                    </div>
                 </form>
 
                 <!-- Contact Info -->
@@ -928,11 +932,11 @@
                         </svg>
                         <div class="flex flex-col gap-2">
                             <h3 class="text-xl font-bold text-earth-dark">Address</h3>
-                            <p class="text-earth-medium text-sm leading-[1.6]">
-                                IUSCM Ashram Headquarters: H. No. 17-1-143/B,<br>
-                                Old Santoshnagar Colony, Hyderabad,<br>
-                                India 500059
-                            </p>
+                            <address class="text-earth-medium text-sm leading-[1.6] not-italic flex flex-col gap-0.5">
+                                <span class="font-semibold">IUSCM Ashram Headquarters</span>
+                                <span>H. No. 17-1-143/B, Old Santoshnagar Colony</span>
+                                <span>Hyderabad, India 500059</span>
+                            </address>
                             <a href="https://www.google.com/maps/place/17%C2%B021'00.9%22N+78%C2%B030'10.0%22E/@17.35025,78.5001941,17z/data=!3m1!4b1!4m4!3m3!8m2!3d17.35025!4d78.502769?entry=ttu&g_ep=EgoyMDI1MTAyMi4wIKXMDSoASAFQAw%3D%3D"
                                 target="_blank" rel="noopener noreferrer"
                                 class="text-earth-dark hover:text-brand-gold transition-colors inline-flex items-center gap-1 text-base font-medium">
@@ -1233,7 +1237,7 @@
                     }
                 });
 
-                console.log('[Magazine] ✅ Subscription form initialized');
+                console.log('[Magazine] Subscription form initialized');
             }
 
             // ===== CONTACT FORM HANDLER =====
