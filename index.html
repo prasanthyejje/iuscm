@@ -232,9 +232,12 @@
 
         /* Navbar initial state - transparent at top */
         .navbar {
-            background: transparent !important;
-            box-shadow: none !important;
-            transition: background 0.3s ease, box-shadow 0.3s ease !important;
+            background-color: rgba(0, 0, 0, 0.3) !important;
+            backdrop-filter: blur(4px);
+        }
+        .navbar-link {
+            color: white;
+            font-size: 0.868rem;
         }
 
         /* Navbar background on scroll - cream/yellow when scrolled */
