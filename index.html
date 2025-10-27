@@ -503,6 +503,12 @@
 
             <!-- Spiritual Gurus Row (Desktop Only) - Hidden on scroll -->
             <div class="guru-row hidden lg:flex justify-between items-center py-2 spiritual-gurus max-w-7xl mx-auto">
+                <!-- Logo on Desktop -->
+                <div class="flex flex-col items-center">
+                    <a href="index.html" class="w-[110px] h-[88px]">
+                        <img src="images/logo.png" alt="IUSCM Logo" class="w-full h-full object-contain">
+                    </a>
+                </div>
                 <div class="flex flex-col items-center">
                     <img src="images/sri-krishna.png" alt="Sri Krishna" class="w-12 h-12 object-contain">
                     <span class="text-[10px] text-white mt-1">Sri Krishna</span>
@@ -522,15 +528,16 @@
             </div>
             <!-- Main Navigation -->
             <div class="flex items-center justify-between py-3">
-                <a href="index.html" class="w-14 h-11">
+                <!-- Logo on Mobile only -->
+                <a href="index.html" class="w-14 h-11 lg:hidden">
                     <img src="images/logo.png" alt="IUSCM Logo" class="w-full h-full object-contain">
                 </a>
-                <div class="hidden lg:flex items-center gap-8 navbar-menu">
+                <div class="hidden lg:flex items-center gap-8 navbar-menu ml-auto">
                     <a href="index.html#about-iuscm" class="navbar-link transition-colors">About IUSCM</a>
                     <a href="index.html#about-swamiji" class="navbar-link transition-colors">About Swamiji</a>
                     <a href="meditation.html" class="navbar-link transition-colors">Practical Manual to Pranahuti
                         Meditation</a>
-                    <a href="index.html#contact" class="navbar-link transition-colors">Contact Us</a>
+                    <a href="index.html#contact" class="navbar-link transition-colors">Contact Us</a>   
                 </div>
                 <button class="lg:hidden flex flex-col gap-1 navbar-toggle" aria-label="Toggle navigation menu"
                     aria-expanded="false">
