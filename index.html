@@ -527,9 +527,9 @@
                 </div>
             </div>
             <!-- Main Navigation -->
-            <div class="flex items-center justify-between py-3">
-                <!-- Logo on Mobile only -->
-                <a href="index.html" class="w-14 h-11 lg:hidden">
+            <div class="flex items-center justify-between">
+                <!-- Logo - visible on mobile always, on desktop only when scrolled -->
+                <a href="index.html" class="w-14 h-11 lg:w-[110px] lg:h-[88px] lg:opacity-0 lg:transition-opacity lg:duration-300" id="navbar-logo">
                     <img src="images/logo.png" alt="IUSCM Logo" class="w-full h-full object-contain">
                 </a>
                 <div class="hidden lg:flex items-center gap-8 navbar-menu ml-auto">
@@ -1033,10 +1033,22 @@
 
                 // Hide gurus immediately when scrolling starts
                 const guruRows = document.querySelectorAll('.guru-row');
+                const navbarLogo = document.getElementById('navbar-logo');
+                
                 if (scrollPos > 10) {
                     guruRows.forEach(row => row.classList.add('hidden-scroll'));
+                    // Show logo when guru row is hidden
+                    if (navbarLogo) {
+                        navbarLogo.classList.remove('lg:opacity-0');
+                        navbarLogo.classList.add('lg:opacity-100');
+                    }
                 } else {
                     guruRows.forEach(row => row.classList.remove('hidden-scroll'));
+                    // Hide logo when guru row is visible
+                    if (navbarLogo) {
+                        navbarLogo.classList.remove('lg:opacity-100');
+                        navbarLogo.classList.add('lg:opacity-0');
+                    }
                 }
 
                 // Change navbar color when reaching About IUSCM section
