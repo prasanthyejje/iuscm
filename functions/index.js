@@ -1,15 +1,24 @@
 const functions = require("firebase-functions");
 const nodemailer = require("nodemailer");
 
+// Load environment variables from .env file (recommended approach)
+require("dotenv").config();
+
+// Get SMTP configuration from environment variables
+const smtpConfig = {
+  user: process.env.SMTP_USER,
+  password: process.env.SMTP_PASSWORD,
+};
+
 // SMTP Configuration
-// Office365 SMTP - Using App Password for authentication
+// Office365 SMTP - Using credentials from Firebase environment config
 const transporter = nodemailer.createTransport({
   host: "smtp.office365.com",
   port: 587,
   secure: false, // Use STARTTLS
   auth: {
-    user: "spiritualmagazine@iuscm.org",
-    pass: "fpftbmkpbprswsjj", // App Password from Microsoft Security
+    user: smtpConfig.user,
+    pass: smtpConfig.password,
   },
   tls: {
     rejectUnauthorized: false,
@@ -80,7 +89,7 @@ exports.sendEmail = functions.https.onRequest(async (req, res) => {
                       </p>
                       
                       <p style="margin: 0 0 25px 0; color: #4A4A4A; font-size: 16px; line-height: 1.8;">
-                        In each edition, you will receive:
+                        In each edition, you will receive the following:
                       </p>
                       
                       <ul style="margin: 0 0 25px 0; padding-left: 20px; color: #4A4A4A; font-size: 16px; line-height: 1.8;">

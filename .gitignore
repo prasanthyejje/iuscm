@@ -20,3 +20,8 @@ yarn-error.log*
 # Environment variables
 .env
 .env.local
+
+# Firebase
+.firebase/
+.runtimeconfig.json
+functions/.runtimeconfig.json
