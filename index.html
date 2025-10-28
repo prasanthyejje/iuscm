@@ -237,9 +237,8 @@
 
         /* Navbar initial state - transparent at top */
         .navbar {
-            
-            background-color: rgba(0, 0, 0, 0.3) !important;
-            backdrop-filter: blur(4px);
+            background-color: transparent !important;
+            /* backdrop-filter: blur(4px); */
         }
           .navbar-link {
             color: white;
@@ -503,27 +502,32 @@
 
             <!-- Spiritual Gurus Row (Desktop Only) - Hidden on scroll -->
             <div class="guru-row hidden lg:flex justify-between items-center py-2 spiritual-gurus max-w-7xl mx-auto">
-                <!-- Logo on Desktop -->
+                <!-- Logo on Desktop - Left aligned -->
                 <div class="flex flex-col items-center">
                     <a href="index.html" class="w-[110px] h-[88px]">
                         <img src="images/logo.png" alt="IUSCM Logo" class="w-full h-full object-contain">
                     </a>
                 </div>
-                <div class="flex flex-col items-center">
-                    <img src="images/sri-krishna.png" alt="Sri Krishna" class="w-12 h-12 object-contain">
-                    <span class="text-[10px] text-white mt-1">Sri Krishna</span>
-                </div>
-                <div class="flex flex-col items-center">
-                    <img src="images/adi-sankaracharya.png" alt="Adi Sankaracharya" class="w-12 h-12 object-contain">
-                    <span class="text-[10px] text-white mt-1">Adi Sankaracharya</span>
-                </div>
-                <div class="flex flex-col items-center">
-                    <img src="images/sri-babuji-maharaj.png" alt="Sri Babuji Maharaj" class="w-12 h-12 object-contain">
-                    <span class="text-[10px] text-white mt-1">Sri Babuji Maharaj</span>
-                </div>
-                <div class="flex flex-col items-center">
-                    <img src="images/sri-lalaji-maharaj.png" alt="Sri Lalaji Maharaj" class="w-12 h-12 object-contain">
-                    <span class="text-[10px] text-white mt-1">Sri Lalaji Maharaj</span>
+                <!-- Larger gap after logo -->
+                <div class="flex-1 max-w-[220px]"></div>
+                <!-- Gurus with equal spacing -->
+                <div class="flex items-center justify-between flex-1">
+                    <div class="flex flex-col items-center">
+                        <img src="images/sri-krishna.png" alt="Sri Krishna" class="w-12 h-12 object-contain">
+                        <span class="text-[10px] text-white mt-1">Sri Krishna</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <img src="images/adi-sankaracharya.png" alt="Adi Sankaracharya" class="w-12 h-12 object-contain">
+                        <span class="text-[10px] text-white mt-1">Adi Sankaracharya</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <img src="images/sri-babuji-maharaj.png" alt="Sri Babuji Maharaj" class="w-12 h-12 object-contain">
+                        <span class="text-[10px] text-white mt-1">Sri Babuji Maharaj</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <img src="images/sri-lalaji-maharaj.png" alt="Sri Lalaji Maharaj" class="w-12 h-12 object-contain">
+                        <span class="text-[10px] text-white mt-1">Sri Lalaji Maharaj</span>
+                    </div>
                 </div>
             </div>
             <!-- Main Navigation -->
