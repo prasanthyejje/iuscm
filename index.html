@@ -156,11 +156,9 @@
         #home h1 {
             font-family: 'Noto Sans', sans-serif !important;
             font-weight: 600 !important;
-            /* Semibold */
             font-size: 28px !important;
             /* Mobile */
-            line-height: 1 !important;
-            /* leading-none in Figma */
+            line-height: 100% !important;
             letter-spacing: 0.1px !important;
         }
 
@@ -242,7 +240,11 @@
         }
           .navbar-link {
             color: white;
-            font-size: 0.875rem;
+            font-family: 'Noto Sans', sans-serif !important;
+            font-weight: 600 !important;
+            font-size: 16px !important;
+            line-height: 20px !important;
+            letter-spacing: 0.1px !important;
         }
 
         /* Navbar background on scroll - cream/yellow when scrolled */
@@ -936,7 +938,8 @@
                         <div class="flex flex-col gap-2">
                             <h3 class="text-xl font-bold text-earth-dark">Email</h3>
                             <a href="mailto:info@iuscm.org"
-                                class="text-earth-medium text-base hover:text-brand-gold transition-colors underline">info@iuscm.org</a>
+                                class="hover:text-brand-gold transition-colors underline"
+                                style="font-family: 'Noto Sans', sans-serif; font-weight: 400; font-size: 16px; line-height: 150%; letter-spacing: 0; color: #3A2E12;">info@iuscm.org</a>
                         </div>
                     </div>
 
@@ -974,7 +977,7 @@
     <!-- Footer -->
     <footer class="py-6 text-center"
         style="background: rgba(255, 249, 211, 0.6); border-top: 1px solid rgba(255, 206, 84, 0.6);">
-        <p class="text-lg text-[#3a2e12] leading-[1.5] sm:text-base">© 2025 IUSCM. All rights reserved.</p>
+        <p style="font-family: 'Noto Sans', sans-serif; font-weight: 400; font-size: 16px; line-height: 150%; letter-spacing: 0; color: #000000;">© 2025 IUSCM. All rights reserved.</p>
     </footer>
 
     <!-- Snackbar Notification Container -->
