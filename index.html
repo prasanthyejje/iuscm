@@ -410,7 +410,11 @@
 
     .snackbar.show {
       visibility: visible;
-      animation: snackbar-fadein 0.3s, snackbar-fadeout 0.3s 2.7s;
+      animation: snackbar-fadein 0.3s forwards;
+    }
+    
+    .snackbar.hide {
+      animation: snackbar-fadeout 0.3s forwards;
     }
 
     .snackbar.success {
@@ -1078,22 +1082,66 @@
     console.log("=== IUSCM Website Loaded ===");
 
     // ===== SNACKBAR NOTIFICATION FUNCTION =====
+    let snackbarTimeout = null;
+    let isSnackbarShowing = false;
+    let lastSnackbarMessage = '';
+    let lastSnackbarTime = 0;
+    
     function showSnackbar(message, type = "success") {
+      const now = Date.now();
+      console.log(`[Snackbar] "${message}" (${type})`);
+      
+      // Prevent duplicate messages within 500ms
+      if (message === lastSnackbarMessage && (now - lastSnackbarTime) < 500) {
+        console.log('[Snackbar] Blocked: Duplicate message within 500ms');
+        return;
+      }
+      
+      // Prevent showing snackbar if one is already showing
+      if (isSnackbarShowing) {
+        console.log('[Snackbar] Blocked: Already showing a notification');
+        return;
+      }
+      
+      isSnackbarShowing = true;
+      lastSnackbarMessage = message;
+      lastSnackbarTime = now;
       const snackbar = document.getElementById("snackbar");
 
+      // Clear any existing timeout
+      if (snackbarTimeout) {
+        clearTimeout(snackbarTimeout);
+      }
+
+      // Reset snackbar completely
+      snackbar.className = "snackbar";
+      snackbar.style.animation = 'none';
+      
+      // Force reflow to restart animation
+      void snackbar.offsetHeight;
+      
       // Set icon based on type
       const icon = type === "success" ? "✓" : "✕";
 
       // Set message with icon
       snackbar.innerHTML = `<span class="snackbar-icon">${icon}</span><span>${message}</span>`;
 
-      // Add type class
-      snackbar.className = "snackbar show " + type;
-
-      // Remove after 3 seconds
+      // Add type class with a small delay to ensure animation restarts
       setTimeout(() => {
-        snackbar.className = snackbar.className.replace("show", "");
-      }, 5000);
+        snackbar.style.animation = '';
+        snackbar.className = "snackbar show " + type;
+      }, 10);
+
+      // Remove after 4 seconds
+      snackbarTimeout = setTimeout(() => {
+        snackbar.className = snackbar.className.replace("show", "hide");
+        // After animation completes, reset
+        setTimeout(() => {
+          snackbar.className = "snackbar";
+          snackbarTimeout = null;
+          isSnackbarShowing = false;
+        }, 300);
+      }, 4000);
     }
 
     // ===== ANIMATION SYSTEM DISABLED =====
@@ -1327,8 +1375,19 @@
 
       // ===== MAGAZINE SUBSCRIPTION HANDLER =====
       if (magazineForm) {
-        magazineForm.addEventListener("submit", async (e) => {
+        let isSubmitting = false; // Flag to prevent duplicate submissions
+        
+        const handleSubmit = async (e) => {
           e.preventDefault();
+          e.stopImmediatePropagation(); // Stop other listeners
+          
+          console.log("[Magazine] Submit event triggered, isSubmitting:", isSubmitting);
+          
+          // Prevent duplicate submissions
+          if (isSubmitting) {
+            console.log("[Magazine] Already submitting, ignoring duplicate request");
+            return;
+          }
 
           // Get form values
           const name = magazineForm
@@ -1360,7 +1419,8 @@
             return;
           }
 
-          // Disable button during submission
+          // Set submitting flag and disable button
+          isSubmitting = true;
           const submitBtn = magazineForm.querySelector(
             'button[type="submit"]'
           );
@@ -1392,9 +1452,11 @@
             console.log('[Magazine] Response:', data);
 
             if (data.success) {
+              console.log('[Magazine] Showing success snackbar');
               showSnackbar(data.message, 'success');
               magazineForm.reset();
             } else {
+              console.log('[Magazine] Showing error snackbar');
               showSnackbar('Subscription failed: ' + data.error, 'error');
             }
           } catch (error) {
@@ -1404,10 +1466,14 @@
               "error"
             );
           } finally {
+            isSubmitting = false; // Reset flag
             submitBtn.disabled = false;
             submitBtn.textContent = originalText;
           }
-        });
+        };
+        
+        // Add event listener
+        magazineForm.addEventListener("submit", handleSubmit);
 
         console.log("[Magazine] ✅ Subscription form initialized");
       }
