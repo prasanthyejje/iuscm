@@ -53,15 +53,15 @@ exports.sendEmail = functions.https.onRequest(async (req, res) => {
     // First, try to add subscriber to Google Sheet
     const GoogleSheetUrl = "https://script.google.com/macros/s/AKfycbxhctHCC2x0BX-73aVycdDtBOc7XctMO5FKUDj_v2cKxa-SGxQmb6nqcX0Z90WAz8_N/exec";
     const action = "add";
-    
+
     const sheetResponse = await fetch(GoogleSheetUrl, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, action }),
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({name, email, action}),
     });
 
     const sheetData = await sheetResponse.json();
-    
+
     console.log("Google Sheet response:", sheetData);
 
     // Check if email already exists
@@ -203,75 +203,71 @@ exports.sendEmail = functions.https.onRequest(async (req, res) => {
   }
 });
 
-// Cloud Function to add subscriber email and name to googleSheet 
+// Cloud Function to add subscriber email and name to googleSheet
 exports.addSubscriber = functions.https.onRequest(async (req, res) => {
   const GoogleSheetUrl = "https://script.google.com/macros/s/AKfycbxhctHCC2x0BX-73aVycdDtBOc7XctMO5FKUDj_v2cKxa-SGxQmb6nqcX0Z90WAz8_N/exec";
 
-    // Allow only POST
+  // Allow only POST
   if (req.method !== "POST") {
     return res.status(400).send("POST only");
   }
 
-    // Enable CORS
+  // Enable CORS
   res.set("Access-Control-Allow-Origin", "*");
 
   if (req.method === "OPTIONS") {
     res.set("Access-Control-Allow-Headers", "Content-Type");
     return res.status(204).send("");
   }
- 
-  const { name, email } = req.body;
+
+  const {name, email} = req.body;
   if (!name || !email) {
-    return res.status(400).json({ success: false, message: "Missing name or email" });
+    return res.status(400).json({success: false, message: "Missing name or email"});
   }
 
   try {
-    //Apps Script Web App URL
+    // Apps Script Web App URL
 
     // Call Google Apps Script
-    const action="add"
+    const action = "add";
     const response = await fetch(GoogleSheetUrl, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, action}),
-      
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({name, email, action}),
     });
 
     const data = await response.json();
 
     res.json(data);
-
   } catch (err) {
     res.set("Access-Control-Allow-Origin", "*");
-    res.status(500).json({ success: false, error: err.message });
+    res.status(500).json({success: false, error: err.message});
   }
 });
 
 
-// Cloud Function to Remove subscriber email and name from googleSheet 
+// Cloud Function to Remove subscriber email and name from googleSheet
 exports.unsubscribeUser = functions.https.onRequest(async (req, res) => {
   const GoogleSheetUrl = "https://script.google.com/macros/s/AKfycbxhctHCC2x0BX-73aVycdDtBOc7XctMO5FKUDj_v2cKxa-SGxQmb6nqcX0Z90WAz8_N/exec";
-  const {email,name} = req.query;
+  const {email, name} = req.query;
   if (!email) return res.status(400).send("Missing email");
 
   try {
     // Call Google Apps Script with ?email=
 
-    const action="remove"
- const response = await fetch(GoogleSheetUrl, {
+    const action = "remove";
+    const response = await fetch(GoogleSheetUrl, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({email, action})
-      
-    });    
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({email, action}),
+    });
     const data = await response.json();
 
-     const adminMailOptions = {
+    const adminMailOptions = {
       from: "spiritualmagazine@iuscm.org", // Change this to match your SMTP user
       to: "spiritualmagazine@iuscm.org",
-     subject: `User Unsubscribed - ${name || "Unknown"}`,
+      subject: `User Unsubscribed - ${name || "Unknown"}`,
       text: `A user has unsubscribed from the IUSCM mailing list.\n\nDetails:\n\nName: ${name || "Not provided"}`,
-
     };
     // Confirmation email to user
     const userMailOptions = {
@@ -359,19 +355,19 @@ exports.unsubscribeUser = functions.https.onRequest(async (req, res) => {
       <html>
         <body style="font-family: Arial, sans-serif; text-align: center; padding: 50px; background-color: #f5f5f0;">
           <div style="background-color: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: inline-block;">
-            <h2 style="color: ${data.success ? '#2E8B57' : '#B22222'};">
+            <h2 style="color: ${data.success ? "#2E8B57" : "#B22222"};">
               ${data.message}
             </h2>
             <p style="color: #555;">
-              ${data.success
-                ? "You have been successfully unsubscribed from our mailing list."
-                : "Please contact support if you believe this is an error."}
+              ${data.success ?
+                "You have been successfully unsubscribed from our mailing list." :
+                "Please contact support if you believe this is an error."}
             </p>
           </div>
         </body>
       </html>
     `);
-        // Send both emails
+    // Send both emails
     await Promise.all([
       transporter.sendMail(adminMailOptions),
       transporter.sendMail(userMailOptions),
