@@ -170,6 +170,49 @@ exports.sendEmail = functions.https.onRequest(async (req, res) => {
   }
 });
 
+// Cloud Function to add subscriber email and name to googleSheet 
+exports.addSubscriber = functions.https.onRequest(async (req, res) => {
+
+    // Allow only POST
+  if (req.method !== "POST") {
+    return res.status(400).send("POST only");
+  }
+
+    // Enable CORS
+  res.set("Access-Control-Allow-Origin", "*");
+
+  if (req.method === "OPTIONS") {
+    res.set("Access-Control-Allow-Headers", "Content-Type");
+    return res.status(204).send("");
+  }
+ 
+  const { name, email } = req.body;
+  if (!name || !email) {
+    return res.status(400).json({ success: false, message: "Missing name or email" });
+  }
+
+  try {
+    //Apps Script Web App URL
+    const GoogleSheetUrl = "https://script.google.com/macros/s/AKfycbyQr1DL4qODC_FNhBcYe8rcfXNSJ4gzCziQ53zIiS6XGnYHdfG7hYVoGQcsdhp3N2yN/exec";
+
+    // Call Google Apps Script
+    const response = await fetch(GoogleSheetUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email })
+    });
+
+    const data = await response.json();
+
+    res.json(data);
+
+  } catch (err) {
+    res.set("Access-Control-Allow-Origin", "*");
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+
 // Cloud Function for Contact Form
 exports.sendContactEmail = functions.https.onRequest(async (req, res) => {
   // Enable CORS
