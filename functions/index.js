@@ -50,6 +50,29 @@ exports.sendEmail = functions.https.onRequest(async (req, res) => {
           .json({success: false, error: "Missing name or email"});
     }
 
+    // First, try to add subscriber to Google Sheet
+    const GoogleSheetUrl = "https://script.google.com/macros/s/AKfycbxhctHCC2x0BX-73aVycdDtBOc7XctMO5FKUDj_v2cKxa-SGxQmb6nqcX0Z90WAz8_N/exec";
+    const action = "add";
+    
+    const sheetResponse = await fetch(GoogleSheetUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, action }),
+    });
+
+    const sheetData = await sheetResponse.json();
+    
+    console.log("Google Sheet response:", sheetData);
+
+    // Check if email already exists
+    if (sheetData.result === "duplicate") {
+      return res.status(400).json({
+        success: false,
+        error: "This email is already subscribed to our magazine",
+      });
+    }
+
+    // If not duplicate, proceed with sending emails
     // Email to subscriber
     const subscriberMailOptions = {
       from: "spiritualmagazine@iuscm.org",
@@ -180,9 +203,9 @@ exports.sendEmail = functions.https.onRequest(async (req, res) => {
   }
 });
 
-const GoogleSheetUrl = "https://script.google.com/macros/s/AKfycbyQr1DL4qODC_FNhBcYe8rcfXNSJ4gzCziQ53zIiS6XGnYHdfG7hYVoGQcsdhp3N2yN/exec";
 // Cloud Function to add subscriber email and name to googleSheet 
 exports.addSubscriber = functions.https.onRequest(async (req, res) => {
+  const GoogleSheetUrl = "https://script.google.com/macros/s/AKfycbxhctHCC2x0BX-73aVycdDtBOc7XctMO5FKUDj_v2cKxa-SGxQmb6nqcX0Z90WAz8_N/exec";
 
     // Allow only POST
   if (req.method !== "POST") {
@@ -227,6 +250,7 @@ exports.addSubscriber = functions.https.onRequest(async (req, res) => {
 
 // Cloud Function to Remove subscriber email and name from googleSheet 
 exports.unsubscribeUser = functions.https.onRequest(async (req, res) => {
+  const GoogleSheetUrl = "https://script.google.com/macros/s/AKfycbxhctHCC2x0BX-73aVycdDtBOc7XctMO5FKUDj_v2cKxa-SGxQmb6nqcX0Z90WAz8_N/exec";
   const {email,name} = req.query;
   if (!email) return res.status(400).send("Missing email");
 
