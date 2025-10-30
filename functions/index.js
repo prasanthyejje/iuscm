@@ -70,7 +70,7 @@ exports.sendEmail = functions.https.onRequest(async (req, res) => {
                   
                   <!-- Header with Golden Accent -->
                   <tr>
-                    <td style="background: linear-gradient(135deg, #D4AF37 0%, #C9A961 100%); padding: 40px 30px; text-align: center;">
+                    <td style="background-color: #C9A961; padding: 40px 30px; text-align: center;">
                       <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 600; letter-spacing: 0.5px;">
                         Institute of Universal Self-Consciousness Movement
                       </h1>
@@ -134,8 +134,8 @@ exports.sendEmail = functions.https.onRequest(async (req, res) => {
                       <p style="margin: 0; color: #CCCCCC; font-size: 13px; line-height: 1.6;">
                         Propagating the Oneness of Mankind through Universal Self-Consciousness
                       </p>
- <a href="https://us-central1-iuscm-e6a1f.cloudfunctions.net/unsubscribeUser?email=${email}&name=${name}"
-                 style=" 
+                       <a href="https://us-central1-iuscm-e6a1f.cloudfunctions.net/unsubscribeUser?email=${email}&name=${name}"
+                 style="
                         color:#FFFFFF;
                         padding: 10px 20px;
                         border-radius: 5px;
@@ -145,10 +145,8 @@ exports.sendEmail = functions.https.onRequest(async (req, res) => {
                         display: inline-block;">
                 Unsubscribe
               </a>
-
                     </td>
                   </tr>
-                  
                 </table>
               </td>
             </tr>
@@ -418,7 +416,7 @@ exports.sendContactEmail = functions.https.onRequest(async (req, res) => {
                   
                   <!-- Header with Golden Accent -->
                   <tr>
-                    <td style="background: linear-gradient(135deg, #D4AF37 0%, #C9A961 100%); padding: 40px 30px; text-align: center;">
+                    <td style="background-color: #C9A961; padding: 40px 30px; text-align: center;">
                       <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 600; letter-spacing: 0.5px;">
                         Institute of Universal Self-Consciousness Movement
                       </h1>
