@@ -241,8 +241,9 @@
 
     /* Navbar initial state - transparent at top */
     .navbar {
-      background-color: transparent !important;
-      /* backdrop-filter: blur(4px); */
+            background-color: rgba(0, 0, 0, 0.3) !important;
+      backdrop-filter: blur(4px);
+
     }
 
     .navbar-link {
@@ -511,7 +512,7 @@
   <nav class="fixed top-0 left-0 right-0 z-50 navbar" id="navbar">
     <div class="section-container">
       <!-- Mobile Gurus Row (Mobile Only at Top) -->
-      <div class="guru-row flex lg:hidden justify-between items-center px-5 py-2 border-b border-white/10">
+      <div class="guru-row flex lg:hidden justify-between items-center px-5 py-2">
         <div class="flex flex-col items-center">
           <img src="images/sri-krishna.png" alt="Sri Krishna" class="w-10 h-10 object-contain rounded-full" />
         </div>
