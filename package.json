@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "tailwindcss -i ./input.css -o ./dist/output.css --watch",
     "build": "tailwindcss -i ./input.css -o ./dist/output.css --minify",
-    "serve": "npx http-server -p 8000"
+    "serve": "npx http-server -p 8001"
   },
   "keywords": [
     "spirituality",
