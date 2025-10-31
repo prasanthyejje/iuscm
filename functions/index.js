@@ -1,5 +1,6 @@
 const functions = require("firebase-functions");
 const nodemailer = require("nodemailer");
+const querystring = require("querystring");
 
 // Load environment variables from .env file (recommended approach)
 require("dotenv").config();
@@ -160,17 +161,21 @@ exports.sendEmail = functions.https.onRequest(async (req, res) => {
                       <p style="margin: 0; color: #CCCCCC; font-size: 13px; line-height: 1.6;">
                         Propagating the Oneness of Mankind through Universal Self-Consciousness
                       </p>
-                       <a href="https://us-central1-iuscm-e6a1f.cloudfunctions.net/unsubscribeUser?email=${email}&name=${name}"
-                 style="
+                       <form action="https://us-central1-iuscm-e6a1f.cloudfunctions.net/unsubscribeUser" method="POST" style="display: inline;">
+                <input type="hidden" name="email" value="${email}">
+                <input type="hidden" name="name" value="${name}">
+                <button type="submit" style="
                         color:#FFFFFF;
                         padding: 10px 20px;
                         border-radius: 5px;
                         font-size: 13px;
                         font-weight: 600;
-                         
-                        display: inline-block;">
+                        background: none;
+                        border: none;
+                        cursor: pointer;">
                 Unsubscribe
-              </a>
+              </button>
+              </form>
                     </td>
                   </tr>
                 </table>
@@ -181,7 +186,7 @@ exports.sendEmail = functions.https.onRequest(async (req, res) => {
         </html>
       `,
     };
-
+    // https://us-central1-iuscm-e6a1f.cloudfunctions.net/unsubscribeUser
     // Email to admin (notification)
     const adminMailOptions = {
       from: "spiritualmagazine@iuscm.org",
@@ -390,8 +395,41 @@ exports.addSubscriber = functions.https.onRequest(async (req, res) => {
 
 
 exports.unsubscribeUser = functions.https.onRequest(async (req, res) => {
-  const email = req.query.email;
-  const name = req.query.name;
+  // Enable CORS
+  res.set("Access-Control-Allow-Origin", "*");
+
+  console.log(" * & && & & & &  unsubscribeUser : ");
+  console.log("Method:", req.method);
+  console.log("Body:", req.body);
+  console.log("Headers:", req.headers);
+
+  if (req.method === "OPTIONS") {
+    res.set("Access-Control-Allow-Methods", "GET, POST");
+    res.set("Access-Control-Allow-Headers", "Content-Type");
+    return res.status(204).send("");
+  }
+
+  let email; let name;
+  if (req.method === "POST") {
+    let body;
+    if (typeof req.body === "object" && req.body !== null) {
+      // Already parsed (e.g., in emulator)
+      body = req.body;
+    } else {
+      // Raw string or Buffer
+      let bodyString = req.body;
+      if (Buffer.isBuffer(bodyString)) {
+        bodyString = bodyString.toString();
+      }
+      body = querystring.parse(bodyString);
+    }
+    ({email, name} = body);
+    console.log("Parsed body:", body);
+    console.log("Email:", email, "Name:", name);
+  } else {
+    email = req.query.email;
+    name = req.query.name;
+  }
 
   if (!email) {
     return res.status(400).send("Email required");
