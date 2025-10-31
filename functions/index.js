@@ -5,10 +5,11 @@ const querystring = require("querystring");
 // Load environment variables from .env file (recommended approach)
 require("dotenv").config();
 
-// Get SMTP configuration from environment variables
 const smtpConfig = {
   user: process.env.SMTP_USER,
   password: process.env.SMTP_PASSWORD,
+  user1: process.env.SMTP_USER2,
+  password1: process.env.SMTP_PASSWORD2,
 };
 
 // SMTP Configuration
@@ -20,6 +21,23 @@ const transporter = nodemailer.createTransport({
   auth: {
     user: smtpConfig.user,
     pass: smtpConfig.password,
+  },
+  tls: {
+    rejectUnauthorized: false,
+    minVersion: "TLSv1.2",
+  },
+  authMethod: "LOGIN",
+  debug: true,
+  logger: true,
+});
+
+const transporterInfoMail = nodemailer.createTransport({
+  host: "smtp.office365.com",
+  port: 587,
+  secure: false, // Use STARTTLS
+  auth: {
+    user: smtpConfig.user1,
+    pass: smtpConfig.password1,
   },
   tls: {
     rejectUnauthorized: false,
@@ -506,7 +524,7 @@ exports.sendContactEmail = functions.https.onRequest(async (req, res) => {
 
     // Email to admin (usaiuscm@gmail.com)
     const adminMailOptions = {
-      from: "spiritualmagazine@iuscm.org", // Change this to match your SMTP user
+      from: "info@iuscm.org", // Change this to match your SMTP user
       to: "spiritualmagazine@iuscm.org",
       subject: `New Contact Form Submission from ${name}`,
       text: `You have received a new message from the IUSCM website contact form:\n\nName: ${name}\nEmail: ${email}\n\nMessage:\n${message}\n\n---\nYou can reply directly to: ${email}`,
@@ -514,7 +532,7 @@ exports.sendContactEmail = functions.https.onRequest(async (req, res) => {
 
     // Confirmation email to user
     const userMailOptions = {
-      from: "spiritualmagazine@iuscm.org",
+      from: "info@iuscm.org",
       to: email,
       subject: "We've Received Your Message - IUSCM",
       html: `
@@ -619,8 +637,8 @@ ${message}
 
     // Send both emails
     await Promise.all([
-      transporter.sendMail(adminMailOptions),
-      transporter.sendMail(userMailOptions),
+      transporterInfoMail.sendMail(adminMailOptions),
+      transporterInfoMail.sendMail(userMailOptions),
     ]);
 
     return res.status(200).json({
