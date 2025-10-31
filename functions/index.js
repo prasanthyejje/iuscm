@@ -5,6 +5,8 @@ const querystring = require("querystring");
 // Load environment variables from .env file (recommended approach)
 require("dotenv").config();
 
+const SCRIPT_SECRET = functions.config().appscript?.secret || process.env.APPSCRIPT_SECRET;
+
 const smtpConfig = {
   user: process.env.SMTP_USER,
   password: process.env.SMTP_PASSWORD,
@@ -70,7 +72,7 @@ exports.sendEmail = functions.https.onRequest(async (req, res) => {
     }
 
     // First, try to add subscriber to Google Sheet
-    const GoogleSheetUrl = "https://script.google.com/macros/s/AKfycbxhctHCC2x0BX-73aVycdDtBOc7XctMO5FKUDj_v2cKxa-SGxQmb6nqcX0Z90WAz8_N/exec";
+    const GoogleSheetUrl = `https://script.google.com/macros/s/${SCRIPT_SECRET}/exec`;
     const action = "add";
 
     const sheetResponse = await fetch(GoogleSheetUrl, {
@@ -227,46 +229,46 @@ exports.sendEmail = functions.https.onRequest(async (req, res) => {
 });
 
 // Cloud Function to add subscriber email and name to googleSheet
-exports.addSubscriber = functions.https.onRequest(async (req, res) => {
-  const GoogleSheetUrl = "https://script.google.com/macros/s/AKfycbxhctHCC2x0BX-73aVycdDtBOc7XctMO5FKUDj_v2cKxa-SGxQmb6nqcX0Z90WAz8_N/exec";
+// exports.addSubscriber = functions.https.onRequest(async (req, res) => {
+//     const GoogleSheetUrl = `https://script.google.com/macros/s/${SCRIPT_SECRET}/exec`;
 
-  // Allow only POST
-  if (req.method !== "POST") {
-    return res.status(400).send("POST only");
-  }
+//   // Allow only POST
+//   if (req.method !== "POST") {
+//     return res.status(400).send("POST only");
+//   }
 
-  // Enable CORS
-  res.set("Access-Control-Allow-Origin", "*");
+//   // Enable CORS
+//   res.set("Access-Control-Allow-Origin", "*");
 
-  if (req.method === "OPTIONS") {
-    res.set("Access-Control-Allow-Headers", "Content-Type");
-    return res.status(204).send("");
-  }
+//   if (req.method === "OPTIONS") {
+//     res.set("Access-Control-Allow-Headers", "Content-Type");
+//     return res.status(204).send("");
+//   }
 
-  const {name, email} = req.body;
-  if (!name || !email) {
-    return res.status(400).json({success: false, message: "Missing name or email"});
-  }
+//   const {name, email} = req.body;
+//   if (!name || !email) {
+//     return res.status(400).json({success: false, message: "Missing name or email"});
+//   }
 
-  try {
-    // Apps Script Web App URL
+//   try {
+//     // Apps Script Web App URL
 
-    // Call Google Apps Script
-    const action = "add";
-    const response = await fetch(GoogleSheetUrl, {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({name, email, action}),
-    });
+//     // Call Google Apps Script
+//     const action = "add";
+//     const response = await fetch(GoogleSheetUrl, {
+//       method: "POST",
+//       headers: {"Content-Type": "application/json"},
+//       body: JSON.stringify({name, email, action}),
+//     });
 
-    const data = await response.json();
+//     const data = await response.json();
 
-    res.json(data);
-  } catch (err) {
-    res.set("Access-Control-Allow-Origin", "*");
-    res.status(500).json({success: false, error: err.message});
-  }
-});
+//     res.json(data);
+//   } catch (err) {
+//     res.set("Access-Control-Allow-Origin", "*");
+//     res.status(500).json({success: false, error: err.message});
+//   }
+// });
 
 
 // // Cloud Function to Remove subscriber email and name from googleSheet
@@ -450,7 +452,7 @@ exports.unsubscribeUser = functions.https.onRequest(async (req, res) => {
     return res.status(400).send("Email required");
   }
   // First, try to add subscriber to Google Sheet
-  const GoogleSheetUrl = "https://script.google.com/macros/s/AKfycbxhctHCC2x0BX-73aVycdDtBOc7XctMO5FKUDj_v2cKxa-SGxQmb6nqcX0Z90WAz8_N/exec";
+  const GoogleSheetUrl = `https://script.google.com/macros/s/${SCRIPT_SECRET}/exec`;
 
   const action = "remove";
   const sheetResponse = await fetch(GoogleSheetUrl, {
