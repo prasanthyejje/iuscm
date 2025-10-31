@@ -246,143 +246,201 @@ exports.addSubscriber = functions.https.onRequest(async (req, res) => {
 });
 
 
-// Cloud Function to Remove subscriber email and name from googleSheet
+// // Cloud Function to Remove subscriber email and name from googleSheet
+// exports.unsubscribeUser = functions.https.onRequest(async (req, res) => {
+//   const GoogleSheetUrl = "https://script.google.com/macros/s/AKfycbxhctHCC2x0BX-73aVycdDtBOc7XctMO5FKUDj_v2cKxa-SGxQmb6nqcX0Z90WAz8_N/exec";
+//   const {email, name} = req.query;
+//   if (!email) return res.status(400).send("Missing email");
+
+//   try {
+//     // Call Google Apps Script with ?email=
+
+//     const action = "remove";
+//     const response = await fetch(GoogleSheetUrl, {
+//       method: "POST",
+//       headers: {"Content-Type": "application/json"},
+//       body: JSON.stringify({email, action}),
+//     });
+//     const data = await response.json();
+
+//     const adminMailOptions = {
+//       from: "spiritualmagazine@iuscm.org", // Change this to match your SMTP user
+//       to: "spiritualmagazine@iuscm.org",
+//       subject: `User Unsubscribed - ${name || "Unknown"}`,
+//       text: `A user has unsubscribed from the IUSCM mailing list.\n\nDetails:\n\nName: ${name || "Not provided"}`,
+//     };
+//     // Confirmation email to user
+//     const userMailOptions = {
+//       from: "spiritualmagazine@iuscm.org",
+//       to: email,
+//       subject: "We've Received Your Message - IUSCM",
+//       html: `
+//        <!DOCTYPE html>
+// <html>
+// <head>
+//   <meta charset="UTF-8">
+//   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+// </head>
+// <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f5f0;">
+//   <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f5f5f0; padding: 40px 20px;">
+//     <tr>
+//       <td align="center">
+//         <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+
+//           <!-- Header with Red Accent -->
+//           <tr>
+//             <td style="background: linear-gradient(135deg, #D4AF37 0%, #C9A961 100%); padding: 40px 30px; text-align: center;">
+//               <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 600; letter-spacing: 0.5px;">
+//                 Institute of Universal Self-Consciousness Movement
+//               </h1>
+//             </td>
+//           </tr>
+
+//           <!-- Main Content -->
+//           <tr>
+//             <td style="padding: 50px 40px;">
+//               <p style="margin: 0 0 20px 0; color: #2C2C2C; font-size: 18px; line-height: 1.6;">
+//                 Dear <strong>${name}</strong>,
+//               </p>
+
+//               <p style="margin: 0 0 25px 0; color: #4A4A4A; font-size: 16px; line-height: 1.8;">
+//                 You have successfully unsubscribed from our <strong>Quarterly Spiritual Magazine</strong> mailing list. We're sorry to see you go!
+//               </p>
+
+//               <p style="margin: 0 0 25px 0; color: #4A4A4A; font-size: 16px; line-height: 1.8;">
+//                 If this was a mistake or you wish to re-subscribe in the future, you can always join our community again.
+//               </p>
+
+//               <p style="margin: 0 0 30px 0; color: #2C2C2C; font-size: 16px; line-height: 1.6;">
+//                 Thank you for being part of our journey toward Universal Self-Consciousness.
+//               </p>
+
+//               <p style="margin: 0 0 10px 0; color: #2C2C2C; font-size: 16px;">
+//                 With best regards,
+//               </p>
+//               <p style="margin: 0; color: #2C2C2C; font-size: 16px; font-weight: 400;">
+//                 The IUSCM Team
+//               </p>
+//             </td>
+//           </tr>
+
+//           <!-- Footer -->
+//           <tr>
+//             <td style="background-color: #2C2C2C; padding: 30px 40px; text-align: center;">
+//               <p style="margin: 0 0 10px 0; color: #D4AF37; font-weight: 600; font-size: 14px;">
+//                 Institute of Universal Self-Consciousness Movement
+//               </p>
+//               <p style="margin: 0; color: #CCCCCC; font-size: 13px; line-height: 1.6;">
+//                 Propagating the Oneness of Mankind through Universal Self-Consciousness
+//               </p>
+//               <p style="margin: 10px 0 0 0; color: #FFFFFF; font-size: 13px;">
+//                 If you change your mind, you can always <a href="https://iuscm.org/index.html#magazine" style="color: #D4AF37; font-weight: bold;">Subscribe again</a>.
+//               </p>
+//             </td>
+//           </tr>
+
+//         </table>
+//       </td>
+//     </tr>
+//   </table>
+// </body>
+// </html>
+
+//       `,
+//     };
+
+//     // Return a simple confirmation HTML page
+//     res.set("Access-Control-Allow-Origin", "*");
+//     res.status(200).send(`
+//       <html>
+//         <body style="font-family: Arial, sans-serif; text-align: center; padding: 50px; background-color: #f5f5f0;">
+//           <div style="background-color: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: inline-block;">
+//             <h2 style="color: ${data.success ? "#2E8B57" : "#B22222"};">
+//               ${data.message}
+//             </h2>
+//             <p style="color: #555;">
+//               ${data.success ?
+//                 "You have been successfully unsubscribed from our mailing list." :
+//                 "Please contact support if you believe this is an error."}
+//             </p>
+//           </div>
+//         </body>
+//       </html>
+//     `);
+//     // Send both emails
+//     await Promise.all([
+//       transporter.sendMail(adminMailOptions),
+//       transporter.sendMail(userMailOptions),
+//     ]);
+//   } catch (err) {
+//     console.error("Unsubscribe error:", err);
+//     res.status(500).send(`
+//       <html>
+//         <body style="font-family: Arial, sans-serif; text-align: center; padding: 50px;">
+//           <h2>Oops! Something went wrong.</h2>
+//           <p>${err.message}</p>
+//         </body>
+//       </html>
+//     `);
+//   }
+// });
+
+
 exports.unsubscribeUser = functions.https.onRequest(async (req, res) => {
-  const GoogleSheetUrl = "https://script.google.com/macros/s/AKfycbxhctHCC2x0BX-73aVycdDtBOc7XctMO5FKUDj_v2cKxa-SGxQmb6nqcX0Z90WAz8_N/exec";
-  const {email, name} = req.query;
-  if (!email) return res.status(400).send("Missing email");
+  const email = req.query.email;
+  const name = req.query.name;
 
-  try {
-    // Call Google Apps Script with ?email=
-
-    const action = "remove";
-    const response = await fetch(GoogleSheetUrl, {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({email, action}),
-    });
-    const data = await response.json();
-
-    const adminMailOptions = {
-      from: "spiritualmagazine@iuscm.org", // Change this to match your SMTP user
-      to: "spiritualmagazine@iuscm.org",
-      subject: `User Unsubscribed - ${name || "Unknown"}`,
-      text: `A user has unsubscribed from the IUSCM mailing list.\n\nDetails:\n\nName: ${name || "Not provided"}`,
-    };
-    // Confirmation email to user
-    const userMailOptions = {
-      from: "spiritualmagazine@iuscm.org",
-      to: email,
-      subject: "We've Received Your Message - IUSCM",
-      html: `
-       <!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f5f0;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f5f5f0; padding: 40px 20px;">
-    <tr>
-      <td align="center">
-        <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-
-          <!-- Header with Red Accent -->
-          <tr>
-            <td style="background: linear-gradient(135deg, #D4AF37 0%, #C9A961 100%); padding: 40px 30px; text-align: center;">
-              <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 600; letter-spacing: 0.5px;">
-                Institute of Universal Self-Consciousness Movement
-              </h1>
-            </td>
-          </tr>
-
-          <!-- Main Content -->
-          <tr>
-            <td style="padding: 50px 40px;">
-              <p style="margin: 0 0 20px 0; color: #2C2C2C; font-size: 18px; line-height: 1.6;">
-                Dear <strong>${name}</strong>,
-              </p>
-
-              <p style="margin: 0 0 25px 0; color: #4A4A4A; font-size: 16px; line-height: 1.8;">
-                You have successfully unsubscribed from our <strong>Quarterly Spiritual Magazine</strong> mailing list. We're sorry to see you go!
-              </p>
-
-              <p style="margin: 0 0 25px 0; color: #4A4A4A; font-size: 16px; line-height: 1.8;">
-                If this was a mistake or you wish to re-subscribe in the future, you can always join our community again.
-              </p>
-
-              <p style="margin: 0 0 30px 0; color: #2C2C2C; font-size: 16px; line-height: 1.6;">
-                Thank you for being part of our journey toward Universal Self-Consciousness.
-              </p>
-
-              <p style="margin: 0 0 10px 0; color: #2C2C2C; font-size: 16px;">
-                With best regards,
-              </p>
-              <p style="margin: 0; color: #2C2C2C; font-size: 16px; font-weight: 400;">
-                The IUSCM Team
-              </p>
-            </td>
-          </tr>
-
-          <!-- Footer -->
-          <tr>
-            <td style="background-color: #2C2C2C; padding: 30px 40px; text-align: center;">
-              <p style="margin: 0 0 10px 0; color: #D4AF37; font-weight: 600; font-size: 14px;">
-                Institute of Universal Self-Consciousness Movement
-              </p>
-              <p style="margin: 0; color: #CCCCCC; font-size: 13px; line-height: 1.6;">
-                Propagating the Oneness of Mankind through Universal Self-Consciousness
-              </p>
-              <p style="margin: 10px 0 0 0; color: #FFFFFF; font-size: 13px;">
-                If you change your mind, you can always <a href="https://iuscm.org/index.html#magazine" style="color: #D4AF37; font-weight: bold;">Subscribe again</a>.
-              </p>
-            </td>
-          </tr>
-
-        </table>
-      </td>
-    </tr>
-  </table>
-</body>
-</html>
-
-      `,
-    };
-
-    // Return a simple confirmation HTML page
-    res.set("Access-Control-Allow-Origin", "*");
-    res.status(200).send(`
-      <html>
-        <body style="font-family: Arial, sans-serif; text-align: center; padding: 50px; background-color: #f5f5f0;">
-          <div style="background-color: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: inline-block;">
-            <h2 style="color: ${data.success ? "#2E8B57" : "#B22222"};">
-              ${data.message}
-            </h2>
-            <p style="color: #555;">
-              ${data.success ?
-                "You have been successfully unsubscribed from our mailing list." :
-                "Please contact support if you believe this is an error."}
-            </p>
-          </div>
-        </body>
-      </html>
-    `);
-    // Send both emails
-    await Promise.all([
-      transporter.sendMail(adminMailOptions),
-      transporter.sendMail(userMailOptions),
-    ]);
-  } catch (err) {
-    console.error("Unsubscribe error:", err);
-    res.status(500).send(`
-      <html>
-        <body style="font-family: Arial, sans-serif; text-align: center; padding: 50px;">
-          <h2>Oops! Something went wrong.</h2>
-          <p>${err.message}</p>
-        </body>
-      </html>
-    `);
+  if (!email) {
+    return res.status(400).send("Email required");
   }
+  // First, try to add subscriber to Google Sheet
+  const GoogleSheetUrl = "https://script.google.com/macros/s/AKfycbxhctHCC2x0BX-73aVycdDtBOc7XctMO5FKUDj_v2cKxa-SGxQmb6nqcX0Z90WAz8_N/exec";
+
+  const action = "remove";
+  const sheetResponse = await fetch(GoogleSheetUrl, {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({name, email, action}),
+  });
+
+  const sheetData = await sheetResponse.json();
+
+  // Check if email already exists
+  if (sheetData.result === "not_found") {
+    return res.status(200).send(`
+          <html>
+            <body style="font-family: Arial, sans-serif; text-align: center; background-color: #f8f8f8; padding: 60px;">
+              <div style="background: #fff; border-radius: 8px; padding: 40px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); display: inline-block;">
+                <h2 style="color: #C9A961;">Already Unsubscribed${name ? `, ${name}` : ""}</h2>
+                <p style="color: #555; font-size: 16px; margin-top: 15px;">
+                  <strong>${email}</strong> has already been removed from our mailing list.<br>
+                  No further action is needed.
+                </p>
+                <p style="color: #888; font-size: 14px; margin-top: 30px;">
+                  If you’d like to rejoin, please re-subscribe on our official website.
+                </p>
+              </div>
+            </body>
+          </html>
+  `);
+  }
+
+  res.status(200).send(`
+    <html>
+      <body style="font-family: Arial, sans-serif; text-align: center; background-color: #f8f8f8; padding: 60px;">
+        <div style="background: #fff; border-radius: 8px; padding: 40px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); display: inline-block;">
+          <h2 style="color: #333;">You’ve been unsubscribed${name ? `, ${name}` : ""}.</h2>
+          <p style="color: #555; font-size: 16px; margin-top: 15px;">
+            We’ve removed <strong>${email}</strong> from our mailing list.<br>
+            You won’t receive further emails from us.
+          </p>
+          <p style="color: #888; font-size: 14px; margin-top: 30px;">
+            If this was a mistake, you can re-subscribe anytime on our website.
+          </p>
+        </div>
+      </body>
+    </html>
+  `);
 });
 
 
