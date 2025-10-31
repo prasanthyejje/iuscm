@@ -4,6 +4,9 @@ const nodemailer = require("nodemailer");
 // Load environment variables from .env file (recommended approach)
 require("dotenv").config();
 
+//google script secrete
+const SCRIPT_SECRET = functions.config().appscript?.secret || process.env.APPSCRIPT_SECRET;
+
 // Get SMTP configuration from environment variables
 const smtpConfig = {
   user: process.env.SMTP_USER,
@@ -51,7 +54,7 @@ exports.sendEmail = functions.https.onRequest(async (req, res) => {
     }
 
     // First, try to add subscriber to Google Sheet
-    const GoogleSheetUrl = "https://script.google.com/macros/s/AKfycbxhctHCC2x0BX-73aVycdDtBOc7XctMO5FKUDj_v2cKxa-SGxQmb6nqcX0Z90WAz8_N/exec";
+    const GoogleSheetUrl = `https://script.google.com/macros/s/${SCRIPT_SECRET}/exec`;
     const action = "add";
 
     const sheetResponse = await fetch(GoogleSheetUrl, {
@@ -205,7 +208,7 @@ exports.sendEmail = functions.https.onRequest(async (req, res) => {
 
 // Cloud Function to add subscriber email and name to googleSheet
 exports.addSubscriber = functions.https.onRequest(async (req, res) => {
-  const GoogleSheetUrl = "https://script.google.com/macros/s/AKfycbxhctHCC2x0BX-73aVycdDtBOc7XctMO5FKUDj_v2cKxa-SGxQmb6nqcX0Z90WAz8_N/exec";
+    const GoogleSheetUrl = `https://script.google.com/macros/s/${SCRIPT_SECRET}/exec`;
 
   // Allow only POST
   if (req.method !== "POST") {
@@ -394,7 +397,7 @@ exports.unsubscribeUser = functions.https.onRequest(async (req, res) => {
     return res.status(400).send("Email required");
   }
   // First, try to add subscriber to Google Sheet
-  const GoogleSheetUrl = "https://script.google.com/macros/s/AKfycbxhctHCC2x0BX-73aVycdDtBOc7XctMO5FKUDj_v2cKxa-SGxQmb6nqcX0Z90WAz8_N/exec";
+    const GoogleSheetUrl = `https://script.google.com/macros/s/${SCRIPT_SECRET}/exec`;
 
   const action = "remove";
   const sheetResponse = await fetch(GoogleSheetUrl, {
