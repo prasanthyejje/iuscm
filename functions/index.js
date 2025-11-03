@@ -199,21 +199,11 @@ exports.sendEmail = onRequest(async (req, res) => {
                       <p style="margin: 0; color: #CCCCCC; font-size: 13px; line-height: 1.6;">
                         Propagating the Oneness of Mankind through Universal Self-Consciousness
                       </p>
-                       <form action="https://us-central1-iuscm-e6a1f.cloudfunctions.net/unsubscribeUser" method="POST" style="display: inline;">
-                <input type="hidden" name="email" value="${email}">
-                <input type="hidden" name="name" value="${name}">
-                <button type="submit" style="
-                        color:#FFFFFF;
-                        padding: 10px 20px;
-                        border-radius: 5px;
-                        font-size: 13px;
-                        font-weight: 600;
-                        background: none;
-                        border: none;
-                        cursor: pointer;">
-                Unsubscribe
-              </button>
-              </form>
+
+              <a href="https://us-central1-iuscm-e6a1f.cloudfunctions.net/unsubscribeUser?email=${encodeURIComponent(email)}&name=${encodeURIComponent(name)}" 
+   style="color:#FFFFFF; padding: 10px 20px; border-radius: 5px; font-size: 13px; font-weight: 600; background: none; border: none; cursor: pointer; text-decoration: none;">
+   Unsubscribe
+</a>
                     </td>
                   </tr>
                 </table>
@@ -433,6 +423,10 @@ exports.sendEmail = onRequest(async (req, res) => {
 
 
 exports.unsubscribeUser = onRequest(async (req, res) => {
+  console.log("Unsubscribe function called with method:", req.method);
+  console.log("Request body:", req.body);
+  console.log("Request query:", req.query);
+  
   // Enable CORS
   res.set("Access-Control-Allow-Origin", "*");
 
@@ -507,6 +501,8 @@ exports.unsubscribeUser = onRequest(async (req, res) => {
 
   // Check if email already exists
   if (sheetData.result === "not_found") {
+    console.log("User not found in mailing list:", email);
+    res.set('Content-Type', 'text/html');
     return res.status(200).send(`
           <html>
             <body style="font-family: Arial, sans-serif; text-align: center; background-color: #f8f8f8; padding: 60px;">
@@ -525,6 +521,8 @@ exports.unsubscribeUser = onRequest(async (req, res) => {
   `);
   }
 
+  console.log("Successfully unsubscribed:", email);
+  res.set('Content-Type', 'text/html');
   res.status(200).send(`
     <html>
       <body style="font-family: Arial, sans-serif; text-align: center; background-color: #f8f8f8; padding: 60px;">
