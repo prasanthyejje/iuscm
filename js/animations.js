@@ -15,7 +15,7 @@
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     
     if (prefersReducedMotion) {
-        console.log('[Animations] Reduced motion detected, disabling animations');
+        // console.log('[Animations] Reduced motion detected, disabling animations');
         return;
     }
 
@@ -23,11 +23,11 @@
     const animatedElements = document.querySelectorAll('[data-animate]');
     
     if (!animatedElements.length) {
-        console.log('[Animations] No elements with data-animate found');
+        // console.log('[Animations] No elements with data-animate found');
         return;
     }
 
-    console.log(`[Animations] Found ${animatedElements.length} elements to animate`);
+    // console.log(`[Animations] Found ${animatedElements.length} elements to animate`);
 
     // Filter out elements inside sticky containers (they should stay static)
     const elementsToAnimate = Array.from(animatedElements).filter(el => {
@@ -43,11 +43,11 @@
     });
 
     if (!elementsToAnimate.length) {
-        console.log('[Animations] No animatable elements after filtering');
+        // console.log('[Animations] No animatable elements after filtering');
         return;
     }
 
-    console.log(`[Animations] Animating ${elementsToAnimate.length} elements (${animatedElements.length - elementsToAnimate.length} sticky elements excluded)`);
+    // console.log(`[Animations] Animating ${elementsToAnimate.length} elements (${animatedElements.length - elementsToAnimate.length} sticky elements excluded)`);
 
     // Create IntersectionObserver with smooth threshold
     const observerOptions = {
@@ -99,12 +99,12 @@
                 observer.observe(el);
             }
         });
-        console.log(`[Animations] Re-animated ${newElements.length} new elements`);
+        // console.log(`[Animations] Re-animated ${newElements.length} new elements`);
     };
 
     // Log animation completions (useful for debugging)
     document.addEventListener('animation-complete', (e) => {
-        console.log(`[Animation Complete] Type: ${e.detail.animationType}, Delay: ${e.detail.delay}ms`);
+        // console.log(`[Animation Complete] Type: ${e.detail.animationType}, Delay: ${e.detail.delay}ms`);
     });
 
 })();
