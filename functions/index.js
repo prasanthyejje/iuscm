@@ -1,11 +1,11 @@
-const functions = require("firebase-functions");
+const { onRequest } = require("firebase-functions/v2/https");
 const nodemailer = require("nodemailer");
 const querystring = require("querystring");
 
 // Load environment variables from .env file (recommended approach)
 require("dotenv").config();
 
-const SCRIPT_SECRET = functions.config().appscript?.secret || process.env.APPSCRIPT_SECRET;
+const SCRIPT_SECRET = process.env.APPSCRIPT_SECRET;
 
 const smtpConfig = {
   user: process.env.SMTP_USER,
@@ -51,7 +51,7 @@ const transporterInfoMail = nodemailer.createTransport({
 });
 
 // Cloud Function to send an email
-exports.sendEmail = functions.https.onRequest(async (req, res) => {
+exports.sendEmail = onRequest(async (req, res) => {
   // Enable CORS
   res.set("Access-Control-Allow-Origin", "*");
 
@@ -75,13 +75,34 @@ exports.sendEmail = functions.https.onRequest(async (req, res) => {
     const GoogleSheetUrl = `https://script.google.com/macros/s/${SCRIPT_SECRET}/exec`;
     const action = "add";
 
-    const sheetResponse = await fetch(GoogleSheetUrl, {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({name, email, action}),
-    });
+    let sheetResponse;
+    try {
+      sheetResponse = await fetch(GoogleSheetUrl, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({name, email, action}),
+      });
+    } catch (fetchError) {
+      console.error("Fetch error:", fetchError);
+      return res.status(500).json({success: false, error: "Failed to connect to subscription service"});
+    }
 
-    const sheetData = await sheetResponse.json();
+    let sheetData;
+    try {
+      const responseText = await sheetResponse.text();
+      console.log("Sheet response text:", responseText);
+
+      // Check if response is HTML (error page)
+      if (responseText.trim().startsWith('<!DOCTYPE') || responseText.trim().startsWith('<html')) {
+        console.error("Google Apps Script returned HTML error page");
+        return res.status(500).json({success: false, error: "Subscription service temporarily unavailable"});
+      }
+
+      sheetData = JSON.parse(responseText);
+    } catch (parseError) {
+      console.error("JSON parse error:", parseError);
+      return res.status(500).json({success: false, error: "Invalid response from subscription service"});
+    }
 
     console.log("Google Sheet response:", sheetData);
 
@@ -411,7 +432,7 @@ exports.sendEmail = functions.https.onRequest(async (req, res) => {
 // });
 
 
-exports.unsubscribeUser = functions.https.onRequest(async (req, res) => {
+exports.unsubscribeUser = onRequest(async (req, res) => {
   // Enable CORS
   res.set("Access-Control-Allow-Origin", "*");
 
@@ -455,13 +476,34 @@ exports.unsubscribeUser = functions.https.onRequest(async (req, res) => {
   const GoogleSheetUrl = `https://script.google.com/macros/s/${SCRIPT_SECRET}/exec`;
 
   const action = "remove";
-  const sheetResponse = await fetch(GoogleSheetUrl, {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({name, email, action}),
-  });
+  let sheetResponse;
+  try {
+    sheetResponse = await fetch(GoogleSheetUrl, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({name, email, action}),
+    });
+  } catch (fetchError) {
+    console.error("Unsubscribe fetch error:", fetchError);
+    return res.status(500).send("Failed to connect to subscription service");
+  }
 
-  const sheetData = await sheetResponse.json();
+  let sheetData;
+  try {
+    const responseText = await sheetResponse.text();
+    console.log("Unsubscribe sheet response text:", responseText);
+
+    // Check if response is HTML (error page)
+    if (responseText.trim().startsWith('<!DOCTYPE') || responseText.trim().startsWith('<html')) {
+      console.error("Google Apps Script returned HTML error page for unsubscribe");
+      return res.status(500).send("Subscription service temporarily unavailable");
+    }
+
+    sheetData = JSON.parse(responseText);
+  } catch (parseError) {
+    console.error("Unsubscribe JSON parse error:", parseError);
+    return res.status(500).send("Invalid response from subscription service");
+  }
 
   // Check if email already exists
   if (sheetData.result === "not_found") {
@@ -503,7 +545,7 @@ exports.unsubscribeUser = functions.https.onRequest(async (req, res) => {
 
 
 // Cloud Function for Contact Form
-exports.sendContactEmail = functions.https.onRequest(async (req, res) => {
+exports.sendContactEmail = onRequest(async (req, res) => {
   // Enable CORS
   res.set("Access-Control-Allow-Origin", "*");
 
