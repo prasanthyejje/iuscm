@@ -27,6 +27,7 @@
   <style>
     :root {
       --stick-top: 96px;
+      --hero-padding-top: 140px;
     }
 
     html {
@@ -146,12 +147,12 @@
       min-height: 100vh !important;
       min-height: 100dvh !important;
       /* Changed to min-height so it can grow with content */
+      padding-top: var(--hero-padding-top) !important;
     }
 
-    /* Remove padding on mobile to prevent overflow */
+    /* Remove padding on mobile to prevent overflow - now uses CSS variable */
     @media (max-width: 1023px) {
       #home .grid {
-        padding-top: 140px !important;
         padding-bottom: 0 !important;
       }
     }
@@ -1170,6 +1171,7 @@
     // ===== NAVBAR & STICKY TOP =====
     (function () {
       const navbar = document.getElementById("navbar");
+      let initialNavHeight = 0; // Store initial navbar height for hero padding
 
       if (!navbar) {
         console.error("[Navbar] ❌ Navbar element not found");
@@ -1254,12 +1256,26 @@
           "--stick-top",
           `${stickyTop}px`
         );
-        console.log("[Sticky] Updated top:", stickyTop);
+
+        // Update hero padding based on initial navbar height (not changing height)
+        if (initialNavHeight > 0) {
+          const heroPadding = initialNavHeight + 20; // Add some buffer
+          document.documentElement.style.setProperty(
+            "--hero-padding-top",
+            `${heroPadding}px`
+          );
+        }
+
+        console.log("[Sticky] Updated top:", stickyTop, "Hero padding:", initialNavHeight + 20);
       }
 
       window.addEventListener("scroll", updateNavbar, { passive: true });
       window.addEventListener("resize", updateStickyTop);
       window.addEventListener("load", () => {
+        // Set initial navbar height for hero padding calculation
+        initialNavHeight = navbar.offsetHeight;
+        console.log("[Navbar] Initial height:", initialNavHeight);
+
         updateStickyTop();
         updateNavbar();
       });
