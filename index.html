@@ -88,11 +88,17 @@
       font-weight: 500 !important;
     }
 
-    /* Sticky media - Only on desktop, not on mobile */
+    :root {
+      /* Adjust this to your navbar height */
+      --stick-top: 96px;
+    }
+
+    /* Default: no sticky (for all <768px) */
     .sticky-media {
       position: static;
     }
 
+    /* Sticky only for screens wider than 768px (includes landscape phones, tablets, desktops) */
     @media (min-width: 768px) {
       .sticky-media {
         position: sticky;
@@ -100,12 +106,25 @@
         align-self: start;
         z-index: 1;
       }
+
+      .sticky-media img {
+        /* Prevent image from being cut on shorter landscape screens */
+        max-height: calc(100svh - var(--stick-top));
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
     }
 
-    .sticky-media img {
-      opacity: 1 !important;
-      transform: none !important;
-      transition: none !important;
+    /* EXTRA: only when the screen is short in height → lift the image a bit */
+    @media (min-width: 768px) and (max-height: 700px) {
+      .sticky-media img {
+        margin-top: -24px;
+        /* adjust: -16px, -20px, -32px */
+      }
     }
 
     /* Hero section - EXACT Figma Match */
@@ -242,7 +261,7 @@
 
     /* Navbar initial state - transparent at top */
     .navbar {
-            background-color: rgba(0, 0, 0, 0.3) !important;
+      background-color: rgba(0, 0, 0, 0.3) !important;
       backdrop-filter: blur(4px);
 
     }
@@ -258,9 +277,9 @@
 
     /* Navbar background on scroll - cream/yellow when scrolled */
     .navbar-scrolled {
-          background: rgba(255, 249, 211, 0.6) !important;
-            backdrop-filter: blur(10px) ;
-            border-bottom: 1px solid rgba(255, 206, 84, 0.6);
+      background: rgba(255, 249, 211, 0.6) !important;
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 206, 84, 0.6);
     }
 
     /* Hamburger menu - initial state (white on transparent navbar) */
@@ -414,7 +433,7 @@
       visibility: visible;
       animation: snackbar-fadein 0.3s forwards;
     }
-    
+
     .snackbar.hide {
       animation: snackbar-fadeout 0.3s forwards;
     }
@@ -491,8 +510,56 @@
         }
       }
     }
+
+    /* default: big desktops (≥1440) – you wanted to show more of the right side */
+    .hero-bg {
+      object-position: 80% center;
+    }
+
+    /* 1280–1439: pull a bit back so the meditator doesn't get cut */
+    @media (max-width: 1439px) {
+      .hero-bg {
+        object-position: 50% center;
+      }
+    }
+
+    /* 1100–1279: viewport is getting closer to your text column, so show even less right */
+    @media (max-width: 1279px) {
+      .hero-bg {
+        object-position: 50% center;
+      }
+    }
+
+    /* 1025–1099: this is where your screenshot is – make sure the meditator stays visible */
+    @media (max-width: 1099px) {
+      .hero-bg {
+        object-position: 50% center;
+      }
+    }
+
+    /* ≤1024px you already swap to the mobile cropped image, so we stop here */
+    @media (max-width: 748px) {
+      .hero-bg {
+        object-position: 50% center;
+      }
+    }
+
+    /* mobile & tablet (≤1024px) */
+    @media (max-width: 1024px) {
+      .hero-bg {
+        object-position: 35%;
+        /* keep meditator visible and centered */
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-bg {
+        object-position: 30%;
+        /* slightly lower for very narrow phones */
+      }
+    }
   </style>
-  
+
 </head>
 
 <body class="overflow-x-hidden" style="
@@ -589,7 +656,8 @@
   <div class="mobile-nav-backdrop" aria-hidden="true"></div>
 
   <!-- Mobile Navigation - Full Width -->
-  <div class="fixed inset-0 bg-[#FFF9D3] z-[60] transform translate-x-full transition-transform duration-300 mobile-nav  "
+  <div
+    class="fixed inset-0 bg-[#FFF9D3] z-[60] transform translate-x-full transition-transform duration-300 mobile-nav  "
     aria-hidden="true">
     <div class="section-container">
       <div class="flex items-center justify-between py-3 ">
@@ -621,12 +689,13 @@
     <!-- Background -->
     <div class="absolute inset-0 -z-10">
       <picture>
-        <!-- Mobile: use the pre-cropped mobile image where the person is in bottom-left -->
-        <source media="(max-width: 1024px)" srcset="images/Hero_image_Mobile.png" />
-        <!-- Default / Desktop image -->
-        <img src="images/hero-background.jpg" alt="Sunrise over calm ocean with meditating silhouette" loading="eager"
-          decoding="async"
-          class="h-full w-full object-cover object-[25%_center] xl:object-[25%_center] lg:object-[30%_center] md:object-[35%_center] sm:object-[40%_center] max-[767px]:object-[20%_45%]" />
+        <!-- show THIS one on mobile / tablets up to 1024px -->
+        <source media="(max-width: 1024px)" srcset="images/Hero_image_Mobile.png"
+          class="h-full w-full object-cover hero-bg" />
+
+        <!-- show THIS one on everything bigger than 1024px -->
+        <img src="images/hero-background.jpg" alt="Sunrise over calm ocean with meditating silhouette"
+          class="h-full w-full object-cover hero-bg" />
       </picture>
     </div>
 
@@ -679,10 +748,8 @@
   </section>
 
   <!-- About IUSCM Section -->
-<section
-  id="about-iuscm"
-  class="relative isolate py-16 sm:py-10 md:py-14 lg:py-12 scroll-m-8 md:scroll-m-11 lg:scroll-m-20  "
->
+  <section id="about-iuscm"
+    class="relative isolate py-16 sm:py-10 md:py-14 lg:py-12 scroll-m-8 md:scroll-m-11 lg:scroll-m-20  ">
     <div class="section-container">
       <div class="grid grid-cols-1 md:grid-cols-[1fr_380px] gap-8 md:gap-16 items-start">
         <!-- Text (left) -->
@@ -826,7 +893,7 @@
   </section>
 
   <!-- Magazine Section -->
-<section class="relative isolate py-16">
+  <section class="relative isolate py-16">
     <div class="section-container" id="magazine">
       <div class="grid grid-cols-1 md:grid-cols-[400px_1fr] gap-8 md:gap-16 items-start">
         <!-- Image (LEFT on desktop, TOP on mobile) -->
@@ -1086,7 +1153,7 @@
   <!-- All JavaScript - Working Version -->
   <script>
 
-    
+
     console.log("=== IUSCM Website Loaded ===");
 
     // ===== SNACKBAR NOTIFICATION FUNCTION =====
@@ -1094,23 +1161,23 @@
     let isSnackbarShowing = false;
     let lastSnackbarMessage = '';
     let lastSnackbarTime = 0;
-    
+
     function showSnackbar(message, type = "success") {
       const now = Date.now();
       console.log(`[Snackbar] "${message}" (${type})`);
-      
+
       // Prevent duplicate messages within 500ms
       if (message === lastSnackbarMessage && (now - lastSnackbarTime) < 500) {
         console.log('[Snackbar] Blocked: Duplicate message within 500ms');
         return;
       }
-      
+
       // Prevent showing snackbar if one is already showing
       if (isSnackbarShowing) {
         console.log('[Snackbar] Blocked: Already showing a notification');
         return;
       }
-      
+
       isSnackbarShowing = true;
       lastSnackbarMessage = message;
       lastSnackbarTime = now;
@@ -1124,10 +1191,10 @@
       // Reset snackbar completely
       snackbar.className = "snackbar";
       snackbar.style.animation = 'none';
-      
+
       // Force reflow to restart animation
       void snackbar.offsetHeight;
-      
+
       // Set icon based on type
       const icon = type === "success" ? "✓" : "✕";
 
@@ -1399,13 +1466,13 @@
       // ===== MAGAZINE SUBSCRIPTION HANDLER =====
       if (magazineForm) {
         let isSubmitting = false; // Flag to prevent duplicate submissions
-        
+
         const handleSubmit = async (e) => {
           e.preventDefault();
           e.stopImmediatePropagation(); // Stop other listeners
-          
+
           console.log("[Magazine] Submit event triggered, isSubmitting:", isSubmitting);
-          
+
           // Prevent duplicate submissions
           if (isSubmitting) {
             console.log("[Magazine] Already submitting, ignoring duplicate request");
@@ -1494,7 +1561,7 @@
             submitBtn.textContent = originalText;
           }
         };
-        
+
         // Add event listener
         magazineForm.addEventListener("submit", handleSubmit);
 
