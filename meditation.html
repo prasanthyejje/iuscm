@@ -37,7 +37,7 @@
         .step-type-2 {
             background: linear-gradient(180deg, #fffdf2 0%, #fff3bf 100%);
             border: 1px solid rgba(255, 206, 84, 0.6);
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            box-shadow: rgb(255, 206, 84,0.4) 0px 20px 30px -10px;
         }
         
         .step-type-3 {
@@ -50,6 +50,7 @@
             background: rgba(255, 255, 245, 0.78);
             border: 1px solid rgba(255, 199, 88, 0.28);
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            padding: 16px !important;
         }
         
         .meditation-navbar {
@@ -57,10 +58,108 @@
             backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(255, 206, 84, 0.6);
         }
+
+        /* Meditation page navbar links - always dark, no hover */
+        .meditation-navbar .navbar-link {
+            color: #3a2e12 !important;
+            font-weight: 400 !important;
+            font-size: 16px !important;
+            line-height: 1.5 !important;
+            transition: none !important;
+        }
+
+        .meditation-navbar .navbar-link:hover {
+            color: #3a2e12 !important;
+        }
+
+        /* Hamburger menu for meditation page - always dark */
+        .meditation-navbar .navbar-toggle span {
+            background-color: #3a2e12 !important;
+        }
         
         .meditation-footer {
             background: rgba(255, 249, 211, 0.6);
             border-top: 1px solid rgba(255, 206, 84, 0.6);
+        }
+
+        /* Mobile navigation overlay - Full width */
+        .mobile-nav {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .mobile-nav.active {
+            transform: translateX(0) !important;
+        }
+
+        /* Meditation page - no hover effects on mobile menu */
+        .meditation-page .mobile-nav a {
+            transition: none !important;
+        }
+
+        .meditation-page .mobile-nav a:hover {
+            color: inherit !important;
+        }
+
+        .meditation-page .mobile-nav-close:hover {
+            color: #3a2e12 !important;
+        }
+
+        /* Mobile menu backdrop */
+        .mobile-nav-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 59;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+
+        .mobile-nav-backdrop.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Close button (X) hover effect */
+        .mobile-nav-close {
+            transition: transform 0.2s ease, color 0.2s ease;
+        }
+
+        .mobile-nav-close:hover {
+            transform: scale(1.1);
+        }
+
+        /* Meditation page container margins - responsive */
+        .meditation-container {
+            padding-left: 20px !important;
+            padding-right: 20px !important;
+        }
+
+        /* Tablet - match home page section-container (40px) */
+        @media (min-width: 768px) {
+            .meditation-container {
+                padding-left: 2.5rem !important;
+                padding-right: 2.5rem !important;
+            }
+        }
+
+        /* Desktop - match home page section-container (48px) */
+        @media (min-width: 1024px) {
+            .meditation-container {
+                padding-left: 3rem !important;
+                padding-right: 3rem !important;
+            }
+        }
+
+        /* Bullet list padding - mobile vs desktop */
+        .step-bullets {
+            padding-left: 0 !important;
+        }
+
+        @media (min-width: 768px) {
+            .step-bullets {
+                padding-left: 2.5rem !important;
+            }
         }
         
         .step-bullets li::before {
@@ -78,41 +177,47 @@
 </head>
 <body class="meditation-page overflow-x-hidden" style="background: radial-gradient(90% 60% at 50% 100%, rgba(255, 230, 154, 0.40) 0%, rgba(255, 230, 154, 0.00) 60%), linear-gradient(180deg, rgba(255, 248, 207, 0.70) 0%, rgba(255, 253, 245, 0.70) 40%, rgba(255, 253, 242, 0.70) 100%), #FFF;">
     <!-- Navigation (Cream Background with Black Text) -->
-    <nav class="fixed top-0 left-0 right-0 z-50 meditation-navbar">
-        <div class="section-container flex items-center justify-between py-4">
-            <a href="index.html" class="w-[60px] h-[48px]">
+    <nav class="fixed top-0 left-0 right-0 z-50 meditation-navbar navbar">
+        <div class="section-container flex items-center justify-between py-3">
+            <a href="index.html" class="w-14 h-11">
                 <img src="images/logo.png" alt="IUSCM Logo" class="w-full h-full object-contain">
             </a>
-            <div class="hidden lg:flex items-center gap-8">
-                <a href="index.html#about-iuscm" class="text-earth-dark font-semibold text-sm hover:text-brand-gold transition-colors">About IUSCM</a>
-                <a href="index.html#about-swamiji" class="text-earth-dark font-semibold text-sm hover:text-brand-gold transition-colors">About Swamiji</a>
-                <a href="meditation.html" class="text-earth-dark font-semibold text-sm hover:text-brand-gold transition-colors">Practical Manual to Pranahuti Meditation</a>
-                <a href="index.html#contact" class="text-earth-dark font-semibold text-sm hover:text-brand-gold transition-colors">Contact Us</a>
+            <div class="hidden lg:flex items-center gap-8 navbar-menu">
+                <a href="index.html#about-iuscm" class="navbar-link transition-colors">About IUSCM</a>
+                <a href="index.html#about-swamiji" class="navbar-link transition-colors">About Swamiji</a>
+                <a href="meditation.html" class="navbar-link transition-colors">Practical Manual to Pranahuti Meditation</a>
+                <a href="index.html#contact" class="navbar-link transition-colors">Contact Us</a>
             </div>
-            <button class="lg:hidden flex flex-col gap-1.5 navbar-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
-                <span class="block w-6 h-0.5 bg-earth-dark transition-all"></span>
-                <span class="block w-6 h-0.5 bg-earth-dark transition-all"></span>
-                <span class="block w-6 h-0.5 bg-earth-dark transition-all"></span>
+            <button class="lg:hidden flex flex-col gap-1 navbar-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+                <span class="block w-5 h-0.5"></span>
+                <span class="block w-5 h-0.5"></span>
+                <span class="block w-5 h-0.5"></span>
             </button>
         </div>
     </nav>
 
-    <!-- Mobile Navigation -->
-    <div class="fixed inset-0 bg-cream z-[60] transform translate-x-full transition-transform duration-300 mobile-nav" aria-hidden="true">
-        <div class="flex items-center justify-between p-5 border-b border-gold-dark/10">
-            <img src="images/logo.png" alt="IUSCM Logo" class="w-12 h-10">
-            <button class="text-3xl text-earth-brown hover:text-gold-dark mobile-nav-close" aria-label="Close menu">×</button>
+    <!-- Mobile Navigation Backdrop -->
+    <div class="mobile-nav-backdrop" aria-hidden="true"></div>
+
+    <!-- Mobile Navigation - Full Width -->
+    <div class="fixed inset-0 bg-[#FFF9D3] z-[60] transform translate-x-full transition-transform duration-300 mobile-nav" aria-hidden="true">
+        <div class="section-container">
+            <div class="flex items-center justify-between py-3">
+                <img src="images/logo.png" alt="IUSCM Logo" class="w-14 h-11">
+                <button class="text-4xl text-earth-dark mobile-nav-close leading-none font-light" aria-label="Close menu">×</button>
+            </div>
         </div>
-        <div class="flex flex-col gap-1 p-5">
-            <a href="index.html#about-iuscm" class="py-3 px-2 text-earth-brown text-base hover:text-brand-gold transition-colors">About IUSCM</a>
-            <a href="index.html#about-swamiji" class="py-3 px-2 text-earth-brown text-base hover:text-brand-gold transition-colors">About Swamiji</a>
-            <a href="meditation.html" class="py-3 px-2 text-brand-gold text-base">Practical Manual to Pranahuti Meditation</a>
-            <a href="index.html#contact" class="py-3 px-2 text-earth-brown text-base hover:text-brand-gold transition-colors">Contact Us</a>
+        <div class="border-t border-[#D4AF37]/20"></div>
+        <div class="flex flex-col p-6">
+            <a href="index.html#about-iuscm" class="py-4 text-earth-dark text-base font-normal border-b border-[#D4AF37]/10">About IUSCM</a>
+            <a href="index.html#about-swamiji" class="py-4 text-earth-dark text-base font-normal border-b border-[#D4AF37]/10">About Swamiji</a>
+            <a href="meditation.html" class="py-4 text-brand-gold text-base font-medium border-b border-[#D4AF37]/10">Practical Manual to Pranahuti Meditation</a>
+            <a href="index.html#contact" class="py-4 text-earth-dark text-base font-normal">Contact Us</a>
         </div>
     </div>
 
     <!-- Main Body Container -->
-    <div class="max-w-7xl mx-auto px-8 lg:px-6 md:px-5 sm:px-4 py-10 pt-32 pb-32 md:pt-28 sm:pt-24 sm:pb-16 w-full box-border">
+    <div class="max-w-7xl mx-auto meditation-container py-10 pt-32 pb-32 md:pt-28 sm:pt-24 sm:pb-16 w-full box-border">
         
         <!-- Page Header -->
         <div class="text-center mb-10 meditation-header">
@@ -125,14 +230,17 @@
         </div>
 
         <!-- Main Content Card -->
-        <div class="meditation-main-card rounded-[18px] p-7 max-w-[1018px] mx-auto lg:p-6 sm:p-5">
+        <div class="meditation-main-card rounded-[18px] max-w-[1018px] mx-auto">
             
             <!-- Introduction Text -->
             <div class="mb-10">
-                <p class="text-earth-medium leading-relaxed mb-4">This is a simple and natural method that helps the seeker in experiencing the Ultimate Reality. This experience brings down the divine-consciousness into the heart of the seeker. The experience of divine-consciousness gradually molds the behavioral personality due to divinization of the lower centers. He realizes that he is not just a physical, vital or mental being but a PURE CONSCIOUSNESS / AWARENESS itself. In the lap of this pure consciousness, he witnesses the creation, sustenance and dissolution of all phenomenal happenings. This comes micro-cosmically in the beginning, and later macro-cosmically. A subjective uncaused peace envelops the person which transcends all understandings. Our ancient scriptures called it "Immortality" ("Amrutatva"). The individual keeps oneself aside as a witness; performs all the works that come to his / her share with a high level of dexterity.</p>
+                <p class="text-earth-medium leading-relaxed mb-4">This is a simple and natural method that helps the seeker in experiencing the Ultimate Reality. This experience brings down the divine-consciousness into the heart of the seeker. The experience of divine-consciousness gradually molds the behavioral personality due to divinization of the lower centers. He realizes that he is not just a physical, vital or mental being but a <strong>PURE CONSCIOUSNESS / AWARENESS</strong> itself. In the lap of this pure consciousness, he witnesses the creation, sustenance and dissolution of all phenomenal happenings. This comes micro-cosmically in the mental happenings in the beginning, and later macro-cosmically. A subjective uncaused peace envelops the person which transcends all understandings. Our ancient scriptures called it <strong>"Immortality"</strong> <strong>("Amrutatva")</strong>. The individual keeps oneself as a witness aside; performs all the works that come to his/her share with a high level of dexterity.</p>
                 
                 <p class="text-earth-medium leading-relaxed">What is needed in this system of meditation is honesty to oneself and sincere desire to go beyond the material coverings of his personality.</p>
             </div>
+
+            <!-- How to do it heading -->
+            <h1 class="text-xl font-bold text-[#3a2e12] mb-6">How to do it?</h1>
 
             <!-- Steps List -->
             <div class="flex flex-col gap-3">
@@ -140,42 +248,42 @@
                 <!-- Step 1 -->
                 <div class="step-type-1 rounded-[14px] p-4 flex flex-col md:flex-row items-start md:items-start gap-4">
                     <span class="step-badge inline-flex items-center justify-center min-w-[74px] h-[29px] rounded-full text-base font-semibold text-[#3a2e12] px-3 flex-shrink-0">Step 1</span>
-                    <p class="text-lg text-[#5a4a1f] leading-[1.5] flex-1 sm:text-base">Choose a time in the morning convenient to you, say 6:00 am and 7:00 pm; keep to this time at all costs.</p>
+                    <p class="text-lg text-[#5a4a1f] leading-[1.5] flex-1 sm:text-base">Choose a time in the morning convenient to you, say - 6:00 am and 7:00 pm; keep to this time at all costs.</p>
                 </div>
 
                 <!-- Step 2 -->
                 <div class="step-type-1 rounded-[14px] p-4 flex flex-col md:flex-row items-start md:items-start gap-4">
                     <span class="step-badge inline-flex items-center justify-center min-w-[74px] h-[29px] rounded-full text-base font-semibold text-[#3a2e12] px-3 flex-shrink-0">Step 2</span>
-                    <p class="text-lg text-[#5a4a1f] leading-[1.5] flex-1 sm:text-base">Select a convenient place (6 sq ft where you are not disturbed. Do not change the place according to fancy; try to keep to the same place.</p>
+                    <p class="text-lg text-[#5a4a1f] leading-[1.5] flex-1 sm:text-base">Select a convenient place to sit where you are not disturbed; do not change the place according to fancy; try to keep to same place.</p>
                 </div>
 
                 <!-- Step 3 -->
                 <div class="step-type-1 rounded-[14px] p-4 flex flex-col md:flex-row items-start md:items-start gap-4">
                     <span class="step-badge inline-flex items-center justify-center min-w-[74px] h-[29px] rounded-full text-base font-semibold text-[#3a2e12] px-3 flex-shrink-0">Step 3</span>
-                    <p class="text-lg text-[#5a4a1f] leading-[1.5] flex-1 sm:text-base">Sit in a convenient posture—one that does not strain you physically; make the base of the posture broader than you feel; relaxes head, arms...</p>
+                    <p class="text-lg text-[#5a4a1f] leading-[1.5] flex-1 sm:text-base">Sit in a convenient posture - a posture which does not strain physically; make the base of the posture broader such that you feel relaxed bodily and mentally.</p>
                 </div>
 
                 <!-- Step 4 -->
                 <div class="step-type-1 rounded-[14px] p-4 flex flex-col md:flex-row items-start md:items-start gap-4">
                     <span class="step-badge inline-flex items-center justify-center min-w-[74px] h-[29px] rounded-full text-base font-semibold text-[#3a2e12] px-3 flex-shrink-0">Step 4</span>
-                    <p class="text-lg text-[#5a4a1f] leading-[1.5] flex-1 sm:text-base">Make a supplication that a divine light is glowing diffused in your heart. (A) not make mentally to say the left in the heart on we right.</p>
+                    <p class="text-lg text-[#5a4a1f] leading-[1.5] flex-1 sm:text-base">Make a supposition that a divine light is glowing diffusing-ly in your heart; do not strain mentally to see the light in the heart i.e., do not image the light.</p>
                 </div>
 
                 <!-- Step 5 -->
                 <div class="step-type-1 rounded-[14px] p-4 flex flex-col md:flex-row items-start md:items-start gap-4">
                     <span class="step-badge inline-flex items-center justify-center min-w-[74px] h-[29px] rounded-full text-base font-semibold text-[#3a2e12] px-3 flex-shrink-0">Step 5</span>
-                    <p class="text-lg text-[#5a4a1f] leading-[1.5] flex-1 sm:text-base">Slowly divert your inner towards a point in the heart—just before the finger widths of your left nipple—call it the point 'A'.</p>
+                    <p class="text-lg text-[#5a4a1f] leading-[1.5] flex-1 sm:text-base">Slowly divert your mind towards a point in the heart - just below two fingers width of your left nipple - say this point as (A).</p>
                 </div>
 
                 <!-- Step 6 - Prayer (Type 2: Gradient Background) -->
                 <div class="step-type-2 rounded-[14px] p-4 flex flex-col gap-4">
-                    <div class="flex items-center gap-[13px]">
+                    <div class="flex flex-col md:flex-row items-start md:items-center gap-3 md:gap-[13px]">
                         <span class="step-badge inline-flex items-center justify-center min-w-[74px] h-[29px] rounded-full text-base font-semibold text-[#3a2e12] px-3 flex-shrink-0">Step 6</span>
                         <p class="text-lg text-[#3a2e12] leading-[1.5] sm:text-base">Mentally repeat this prayer:</p>
                     </div>
                     <div class="text-center">
                         <p class="text-[22px] font-semibold text-[#3a2e12] leading-[35.2px] sm:text-lg">
-                            O! Master — Thou are the real Goal of Human life —<br>
+                            O! Master — Thou are the real goal of human life —<br>
                             We are all yet but slaves of our wishes putting a bar to our advancement —<br>
                             Thou are the only God and power to bring us up to that State.
                         </p>
@@ -185,88 +293,93 @@
                 <!-- Step 7 -->
                 <div class="step-type-1 rounded-[14px] p-4 flex flex-col md:flex-row items-start md:items-start gap-4">
                     <span class="step-badge inline-flex items-center justify-center min-w-[74px] h-[29px] rounded-full text-base font-semibold text-[#3a2e12] px-3 flex-shrink-0">Step 7</span>
-                    <p class="text-lg text-[#5a4a1f] leading-[1.5] flex-1 sm:text-base">Repeat the prayer only once or twice—then broad over its meaning and guide into the condition it leads.</p>
+                    <p class="text-lg text-[#5a4a1f] leading-[1.5] flex-1 sm:text-base">Repeat this prayer only once or twice - then try to brood over the meaning of the prayer and glide into the condition that it leads to.</p>
                 </div>
 
                 <!-- Step 8 -->
                 <div class="step-type-1 rounded-[14px] p-4 flex flex-col md:flex-row items-start md:items-start gap-4">
                     <span class="step-badge inline-flex items-center justify-center min-w-[74px] h-[29px] rounded-full text-base font-semibold text-[#3a2e12] px-3 flex-shrink-0">Step 8</span>
-                    <p class="text-lg text-[#5a4a1f] leading-[1.5] flex-1 sm:text-base">A variety of thoughts may gain way over mind. Do not be afraid anyway, or irritated—do not try to control the thoughts—you shall fall if you attempt to do so.</p>
+                    <p class="text-lg text-[#5a4a1f] leading-[1.5] flex-1 sm:text-base">There would be certainly a gush of variety of thoughts into your mind. Do not be afraid/annoyed or irritated - i.e., do not try to control thoughts - you shall fail if you attempt to do so.</p>
                 </div>
 
                 <!-- Step 9 -->
                 <div class="step-type-1 rounded-[14px] p-4 flex flex-col md:flex-row items-start md:items-start gap-4">
                     <span class="step-badge inline-flex items-center justify-center min-w-[74px] h-[29px] rounded-full text-base font-semibold text-[#3a2e12] px-3 flex-shrink-0">Step 9</span>
-                    <p class="text-lg text-[#5a4a1f] leading-[1.5] flex-1 sm:text-base">Do not bother to control thoughts as meditating—that is the job of the Master, not yours. Simply go on with the purpose.</p>
+                    <p class="text-lg text-[#5a4a1f] leading-[1.5] flex-1 sm:text-base">Do not bother to control the thoughts while you are meditating as that is the job of the Master and not yours. Simply ignore the thoughts as uninvited guests.</p>
                 </div>
 
                 <!-- Step 10 -->
                 <div class="step-type-1 rounded-[14px] p-4 flex flex-col md:flex-row items-start md:items-start gap-4">
                     <span class="step-badge inline-flex items-center justify-center min-w-[74px] h-[29px] rounded-full text-base font-semibold text-[#3a2e12] px-3 flex-shrink-0">Step 10</span>
-                    <p class="text-lg text-[#5a4a1f] leading-[1.5] flex-1 sm:text-base">Sit thus for about an hour in the morning and evening to start; gradually increase to one hour with practice.</p>
+                    <p class="text-lg text-[#5a4a1f] leading-[1.5] flex-1 sm:text-base">Sit in this way for meditation, to start with, for half hour in the morning and half hour in the evening; gradually increase to one hour in due course of practice.</p>
                 </div>
 
                 <!-- Step 11 -->
                 <div class="step-type-1 rounded-[14px] p-4 flex flex-col md:flex-row items-start md:items-start gap-4">
                     <span class="step-badge inline-flex items-center justify-center min-w-[74px] h-[29px] rounded-full text-base font-semibold text-[#3a2e12] px-3 flex-shrink-0">Step 11</span>
-                    <p class="text-lg text-[#5a4a1f] leading-[1.5] flex-1 sm:text-base">Do not be carried away by "Divine or Master" visions; these items regarding visions on the spiritual path; you will be disappointed.</p>
+                    <p class="text-lg text-[#5a4a1f] leading-[1.5] flex-1 sm:text-base">Do not be carried away with “Puranic or Ithehasik” stories in our scriptures regarding miracles or super powers in following a spiritual path i.e., yogic path of meditation; you will be disappointed.</p>
                 </div>
 
                 <!-- Step 12 -->
                 <div class="step-type-1 rounded-[14px] p-4 flex flex-col md:flex-row items-start md:items-start gap-4">
                     <span class="step-badge inline-flex items-center justify-center min-w-[74px] h-[29px] rounded-full text-base font-semibold text-[#3a2e12] px-3 flex-shrink-0">Step 12</span>
-                    <p class="text-lg text-[#5a4a1f] leading-[1.5] flex-1 sm:text-base">Experiences will come as you travel, but they are incidental milestones—not the goal. Do not get lost on the road.</p>
+                    <p class="text-lg text-[#5a4a1f] leading-[1.5] flex-1 sm:text-base">You shall definitely have experiences as you travel on a yogic path, but they are incidental mile stones on the road to the goal. It is not the Master’s desire that you are lost on the road.</p>
                 </div>
 
                 <!-- Step 13 -->
                 <div class="step-type-1 rounded-[14px] p-4 flex flex-col md:flex-row items-start md:items-start gap-4">
                     <span class="step-badge inline-flex items-center justify-center min-w-[74px] h-[29px] rounded-full text-base font-semibold text-[#3a2e12] px-3 flex-shrink-0">Step 13</span>
-                    <p class="text-lg text-[#5a4a1f] leading-[1.5] flex-1 sm:text-base">Minutes are predicted by names and their terms materials; the goal is to go beyond names and mine to the purpose that meditation.</p>
+                    <p class="text-lg text-[#5a4a1f] leading-[1.5] flex-1 sm:text-base">Miracles are perceived by senses and mind, therefore are material in nature; but our goal is to go beyond the senses and mind in transcendental meditation.</p>
                 </div>
 
                 <!-- Step 14 - Cleaning of the heart (Type 3 with bullets) -->
                 <div class="step-type-3 rounded-[14px] p-4">
-                    <div class="flex items-start gap-4 mb-4">
+                    <div class="flex flex-col md:flex-row items-start gap-3 md:gap-4 mb-4">
                         <span class="step-badge inline-flex items-center justify-center min-w-[74px] h-[29px] rounded-full text-base font-semibold text-[#3a2e12] px-3 flex-shrink-0">Step 14</span>
-                        <h3 class="text-lg font-semibold text-[#3a2e12] leading-[1.5] flex-1">Cleaning of the heart (evening meditation):</h3>
+                        <p class="text-lg text-[#5a4a1f] leading-[1.5] flex-1 sm:text-base">Another important item in this method of yogic practice is cleaning of the heart. This is done in the evening meditation.</p>
                     </div>
-                    <ul class="pl-10 space-y-2 step-bullets">
-                        <li class="relative text-lg text-[#5a4a1f] leading-[1.5] pl-5 sm:text-base">Sit for meditation as above.</li>
-                        <li class="relative text-lg text-[#5a4a1f] leading-[1.5] pl-5 sm:text-base">Close your eyes and place attention on point (B), two finger widths above the left lower rib—below point (A). This location is the seat of "Mana," Across Dwellers.</li>
-                        <li class="relative text-lg text-[#5a4a1f] leading-[1.5] pl-5 sm:text-base">Direct waves of divine grace over point (B) and let them leave toward your back, removing micro-impressions (Sanskara) from the casual body. Continue for 20 minutes.</li>
-                        <li class="relative text-lg text-[#5a4a1f] leading-[1.5] pl-5 sm:text-base">You may slip into "Sat Samadhi," a twilight sleepy consciousness, during the process.</li>
-                        <li class="relative text-lg text-[#5a4a1f] leading-[1.5] pl-5 sm:text-base">After cleaning, you will feel light in mind and spirit.</li>
+                    <ul class="pl-0 md:pl-10 space-y-2 step-bullets">
+                        <li class="relative text-lg text-[#5a4a1f] leading-[1.5] pl-5 sm:text-base">Sit for meditation as indicated earlier.</li>
+                        <li class="relative text-lg text-[#5a4a1f] leading-[1.5] pl-5 sm:text-base">Close your eyes, direct your thought to a point (B) just two finger width above the left lower side rib, down the point (A). This is the seat for the “causal body” (karana sareera).</li>
+                        <li class="relative text-lg text-[#5a4a1f] leading-[1.5] pl-5 sm:text-base">Direct waves of divine grace (power) passing over point (B) and leaving towards your back from the sides, removing all micro impressions (sanskaras) from the causal sheath. Continue in this mood for 15 to 30 minutes.</li>
+                        <li class="relative text-lg text-[#5a4a1f] leading-[1.5] pl-5 sm:text-base">You may slip into “Jada Samadhi” - a state of twilight - sleepy consciousness, while engaged in this process.</li>
+                        <li class="relative text-lg text-[#5a4a1f] leading-[1.5] pl-5 sm:text-base">After cleaning the heart, you would feel light in mind and spirit.</li>
                     </ul>
                 </div>
 
                 <!-- Step 15 (Type 3 with bullets) -->
                 <div class="step-type-3 rounded-[14px] p-4">
-                    <div class="flex items-start gap-4 mb-4">
+                    <div class="flex flex-col items-start gap-3 mb-4 md:flex-row md:items-start md:gap-4">
                         <span class="step-badge inline-flex items-center justify-center min-w-[74px] h-[29px] rounded-full text-base font-semibold text-[#3a2e12] px-3 flex-shrink-0">Step 15</span>
-                        <p class="text-lg text-[#5a4a1f] leading-[1.5] flex-1 sm:text-base">Once your thoughts to the Master is gone by repeating the prayer once and Sat always gone on morning.</p>
+                        <p class="text-lg text-[#5a4a1f] leading-[1.5] flex-1 sm:text-base">One more item to be done in the process; while going to bed in the night (may be at 9.00 pm) draw your thought to Master's grace, by repeating the prayer once as indicated earlier at Item (6) and go to sleep by reflecting over the meaning of the prayer.</p>
                     </div>
-                    <ul class="pl-10 space-y-2 step-bullets">
-                        <li class="relative text-lg text-[#5a4a1f] leading-[1.5] pl-5 sm:text-base">Draw your thought to the Master's grace by repeating the prayer once and Sat always</li>
-                        <li class="relative text-lg text-[#5a4a1f] leading-[1.5] pl-5 sm:text-base">Say "Om Om Om" during the process.</li>
-                        <li class="relative text-lg text-[#5a4a1f] leading-[1.5] pl-5 sm:text-base">The Maker knows to get expressed consciously during the night and experience new levels, always.</li>
+                    <ul class="pl-0 md:pl-10 space-y-2 step-bullets">
+                        <li class="relative text-lg text-[#5a4a1f] leading-[1.5] pl-5 sm:text-base">This will help in removing the micro impressions (sanskaras) during the night from the body and exhaust the experiences (bhoga).</li>
                     </ul>
                 </div>
 
                 <!-- Step 16 -->
-                <div class="step-type-1 rounded-[14px] p-4 flex flex-col md:flex-row items-start md:items-start gap-4">
-                    <span class="step-badge inline-flex items-center justify-center min-w-[74px] h-[29px] rounded-full text-base font-semibold text-[#3a2e12] px-3 flex-shrink-0">Step 16</span>
-                    <p class="text-lg text-[#5a4a1f] leading-[1.5] flex-1 sm:text-base">Maintain harmonious, cordial relations with all. As a householder (Grihastha), responsibilities remain, and worries are natural, causing thought-disturbance. With practice, disturbances settle and detachment blooms—mind becomes calm and peaceful in the heart's depth. This follows the yogic principle of "detachment by attachment" taught by Lord Krishna in the Gita.</p>
+                <div class="step-type-3 rounded-[14px] p-4">
+                    <div class="flex flex-col items-start gap-3 mb-4 md:flex-row md:items-start md:gap-4">
+                        <span class="step-badge inline-flex items-center justify-center min-w-[74px] h-[29px] rounded-full text-base font-semibold text-[#3a2e12] px-3 flex-shrink-0">Step 16</span>
+                        <p class="text-lg text-[#5a4a1f] leading-[1.5] flex-1 sm:text-base">Try sincerely to maintain harmonious and cordial relations with all those with whom you come in contact and interact. This becomes more automatic as you progress in your practice.</p>
+                    </div>
+                    <ul class="pl-0 md:pl-10 space-y-2 step-bullets">
+                        <li class="relative text-lg text-[#5a4a1f] leading-[1.5] pl-5 sm:text-base">As a householder (grihastha), you have responsibilities towards family, relatives, neighbors and friends.</li>
+                        <li class="relative text-lg text-[#5a4a1f] leading-[1.5] pl-5 sm:text-base">Problems and worries in the family are natural and cause thought disturbances during the meditation. But as you advance in your yogic practice, these disturbances settle down, leaving the mind surface calm. A stage comes when you completely get detached from the rumblings of the mind – becoming calm and peaceful in the depths of your heart.</li>
+                        <li class="relative text-lg text-[#5a4a1f] leading-[1.5] pl-5 sm:text-base">This is based on the most famous yogic principle of “detachment by attachment” advocated by Lord Krishna in Bhagvat Gita.</li>
+                    </ul>
                 </div>
 
                 <!-- Step 17 (Type 3 with bullets) -->
                 <div class="step-type-3 rounded-[14px] p-4">
-                    <div class="flex items-start gap-4 mb-4">
+                    <div class="flex flex-col items-start gap-3 mb-4 md:flex-row md:items-start md:gap-4">
                         <span class="step-badge inline-flex items-center justify-center min-w-[74px] h-[29px] rounded-full text-base font-semibold text-[#3a2e12] px-3 flex-shrink-0">Step 17</span>
-                        <p class="text-lg text-[#5a4a1f] leading-[1.5] flex-1 sm:text-base">Cultivate Trusteeship in household affairs—everyone is God's creation and you act as a trustee for their welfare; material means are provided by Him according to their Bhoga through you.</p>
+                        <p class="text-lg text-[#5a4a1f] leading-[1.5] flex-1 sm:text-base">This system advocates seekers to cultivate the principle of Trusteeship in managing the household affairs. Simply, it means all the members in the family are God's creation and as a head of the family, you act as a trustee for their welfare. Material means are provided by him according to their experience (bhoga) through you.</p>
                     </div>
-                    <ul class="pl-10 space-y-2 step-bullets">
-                        <li class="relative text-lg text-[#5a4a1f] leading-[1.5] pl-5 sm:text-base">This Bhava gradually detaches you from action's effects; mind is freed from forming new Sanskaras—Nishkama Karma as in the Gita.</li>
-                        <li class="relative text-lg text-[#5a4a1f] leading-[1.5] pl-5 sm:text-base">Thus this yogic practice is a practical compendium of the Gita's teaching.</li>
+                    <ul class="pl-0 md:pl-10 space-y-2 step-bullets">
+                        <li class="relative text-lg text-[#5a4a1f] leading-[1.5] pl-5 sm:text-base">Cultivation of this feeling (bhava), gradually, detaches you from effects of action; and mind is freed from forming new micro impressions (sanskaras) - the so called Nishkama Karma, so beautifully advocated by Lord Krishna.</li>
+                        <li class="relative text-lg text-[#5a4a1f] leading-[1.5] pl-5 sm:text-base">Thus, this yogic practice is nothing but a practical manual - compendium of teachings of Gita by Lord Krishna.</li>
                     </ul>
                 </div>
 
@@ -280,8 +393,8 @@
             </div>
             
             <!-- Back to Home Button -->
-            <div class="mt-8 flex justify-center">
-                <a href="index.html" class="inline-flex items-center gap-2 px-6 py-3 bg-[#C9A961] text-white font-medium text-sm rounded-lg hover:bg-[#b89851] transition-colors">
+            <div class="mt-12 flex justify-center">
+                <a href="index.html" class="inline-flex items-center gap-2 px-6 py-3 bg-[#C9A961] text-[#2d2308] font-medium text-base rounded-lg hover:bg-[#b89851] transition-colors">
                     ← Back to Home
                 </a>
             </div>
