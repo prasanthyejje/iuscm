@@ -199,11 +199,21 @@ exports.sendEmail = onRequest(async (req, res) => {
                       <p style="margin: 0; color: #CCCCCC; font-size: 13px; line-height: 1.6;">
                         Propagating the Oneness of Mankind through Universal Self-Consciousness
                       </p>
-
-              <a href="https://us-central1-iuscm-e6a1f.cloudfunctions.net/unsubscribeUser?email=${encodeURIComponent(email)}&name=${encodeURIComponent(name)}" 
-   style="color:#FFFFFF; padding: 10px 20px; border-radius: 5px; font-size: 13px; font-weight: 600; background: none; border: none; cursor: pointer; text-decoration: none;">
-   Unsubscribe
-</a>
+                <form action="https://us-central1-iuscm-e6a1f.cloudfunctions.net/unsubscribeUser" method="POST" style="display: inline;">
+                <input type="hidden" name="email" value="${email}">
+                <input type="hidden" name="name" value="${name}">
+                <button type="submit" style="
+                        color:#FFFFFF;
+                        padding: 10px 20px;
+                        border-radius: 5px;
+                        font-size: 13px;
+                        font-weight: 600;
+                        background: none;
+                        border: none;
+                        cursor: pointer;">
+                Unsubscribe
+              </button>
+              </form>
                     </td>
                   </tr>
                 </table>
@@ -567,9 +577,10 @@ exports.sendContactEmail = onRequest(async (req, res) => {
     // Email to admin (usaiuscm@gmail.com)
     const adminMailOptions = {
       from: "info@iuscm.org", // Change this to match your SMTP user
-      to: "spiritualmagazine@iuscm.org",
+      to: "info@iuscm.org",
+      replyTo:email,
       subject: `New Contact Form Submission from ${name}`,
-      text: `You have received a new message from the IUSCM website contact form:\n\nName: ${name}\nEmail: ${email}\n\nMessage:\n${message}\n\n---\nYou can reply directly to: ${email}`,
+      text: `You have received a new message from the IUSCM website contact form:\n\nName: ${name}\n\nMessage:\n${message}`,
     };
 
     // Confirmation email to user
