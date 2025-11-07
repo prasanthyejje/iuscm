@@ -578,9 +578,8 @@ exports.sendContactEmail = onRequest(async (req, res) => {
     const adminMailOptions = {
       from: "info@iuscm.org", // Change this to match your SMTP user
       to: "info@iuscm.org",
-      replyTo:email,
       subject: `New Contact Form Submission from ${name}`,
-      text: `You have received a new message from the IUSCM website contact form:\n\nName: ${name}\n\nMessage:\n${message}`,
+      text: `You have received a new message from the IUSCM website contact form:\n\nName: ${name}\nEmail: ${email}\n\nMessage:\n${message}\n\n---\nYou can reply directly to: ${email}`,
     };
 
     // Confirmation email to user
